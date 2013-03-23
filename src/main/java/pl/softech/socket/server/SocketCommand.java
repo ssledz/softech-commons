@@ -13,23 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package pl.softech.reflection;
+package pl.softech.socket.server;
 
-import java.lang.annotation.Annotation;
-import java.util.Collection;
-import java.util.Map;
+import java.nio.channels.SocketChannel;
 
 /**
  *
  * @author Sławomir Śledź <slawomir.sledz@sof-tech.pl>
  * @since 1.0
  */
-public interface IMetaDataFactory<T extends Annotation> {
+public class SocketCommand {
 
-	public Collection<IMetaData<T>> class2MetaData(Class<?> clazz);
+    public static final int REGISTER = 1;
+    public static final int CHANGEOPS = 2;
+    public SocketChannel socket;
+    public int type;
+    public int ops;
 
-	public Map<String, IMetaData<T>> class2MetaDataByFullPath(Class<?> clazz);
-
-	public String getAccessSeparator();
-
+    public SocketCommand(SocketChannel socket, int type, int ops) {
+        this.socket = socket;
+        this.type = type;
+        this.ops = ops;
+    }
 }

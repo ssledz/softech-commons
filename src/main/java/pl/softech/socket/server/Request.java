@@ -13,23 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package pl.softech.reflection;
+package pl.softech.socket.server;
 
-import java.lang.annotation.Annotation;
-import java.util.Collection;
-import java.util.Map;
+import java.io.IOException;
+import java.nio.channels.SocketChannel;
 
 /**
  *
  * @author Sławomir Śledź <slawomir.sledz@sof-tech.pl>
  * @since 1.0
  */
-public interface IMetaDataFactory<T extends Annotation> {
+public class Request implements IRequest {
 
-	public Collection<IMetaData<T>> class2MetaData(Class<?> clazz);
+    private final SocketChannel socket;
+    private final byte[] rawData;
 
-	public Map<String, IMetaData<T>> class2MetaDataByFullPath(Class<?> clazz);
+    public Request(SocketChannel socket, byte[] rawData) throws BadRequestException, IOException {
+        this.socket = socket;
+        this.rawData = rawData;
+    }
 
-	public String getAccessSeparator();
+    public byte[] getRawData() {
+        return rawData;
+    }
 
+    public SocketChannel getSocket() {
+        return socket;
+    }
 }

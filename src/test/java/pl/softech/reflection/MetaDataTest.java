@@ -1,3 +1,18 @@
+/*
+ * Copyright 2013 Sławomir Śledź <slawomir.sledz@sof-tech.pl>.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package pl.softech.reflection;
 
 import java.util.Collection;
@@ -16,20 +31,19 @@ import pl.softech.reflection.SampleDataGenerator.SampleMark;
 
 /**
  *
- * @author Sławomir Śledź
+ * @author Sławomir Śledź <slawomir.sledz@sof-tech.pl>
  * @since 1.0
  */
 public class MetaDataTest {
 
     private static IMetaDataFactory<SampleMark> factory;
-
     private static Random random;
-
     private Collection<SampleDataGenerator.Person> persons;
     private Collection<SampleDataGenerator.Driver> drivers;
     private Collection<SampleDataGenerator.Car> cars;
 
-    public MetaDataTest() { }
+    public MetaDataTest() {
+    }
 
     @BeforeClass
     public static void setUpClass() throws Exception {
@@ -37,7 +51,6 @@ public class MetaDataTest {
         random = new Random(23456);
     }
 
-    
     @Before
     public void setUp() {
         persons = SampleDataGenerator.getSamplePersons(10, random);
@@ -51,22 +64,22 @@ public class MetaDataTest {
     @Test
     public void testSetValue() throws Exception {
 
-        Map<String,IMetaData<SampleMark>> name2MetaData;
+        Map<String, IMetaData<SampleMark>> name2MetaData;
         name2MetaData = factory.class2MetaDataByFullPath(Person.class);
 
-        for(Person p : persons) {
+        for (Person p : persons) {
 
             float weight = SampleDataGenerator.getSampleWeight(random, p.weight);
             int age = p.getAge();
             String lastName = p.getLastname();
-            
+
             IMetaData<SampleMark> metaData =
                     name2MetaData.get("pl.softech.reflection.SampleDataGenerator$Person|weight");
             metaData.setValue(p, weight);
             Person.assertPerson(p, lastName, weight, age);
         }
-        
-        for(Person p : persons) {
+
+        for (Person p : persons) {
 
             float weight = p.weight;
             int age = p.getAge();
@@ -79,7 +92,7 @@ public class MetaDataTest {
         }
 
         name2MetaData = factory.class2MetaDataByFullPath(Car.class);
-        for(Car c : cars) {
+        for (Car c : cars) {
 
             Driver driver = c.getDriver();
             String lastName = driver.getLastname();
@@ -121,33 +134,31 @@ public class MetaDataTest {
      */
     @Test
     public void testGetValue() throws Exception {
-        
-        Map<String,IMetaData<SampleMark>> name2MetaData;
+
+        Map<String, IMetaData<SampleMark>> name2MetaData;
         name2MetaData = factory.class2MetaDataByFullPath(Person.class);
 
         assertEquals(3, name2MetaData.size());
 
-        for(Person p : persons) {
+        for (Person p : persons) {
 
             Person.assertPerson(p,
                     (String) name2MetaData.get("pl.softech.reflection.SampleDataGenerator$Person|lastname").getValue(p),
                     (Float) name2MetaData.get("pl.softech.reflection.SampleDataGenerator$Person|weight").getValue(p),
-                    (Integer) name2MetaData.get("pl.softech.reflection.SampleDataGenerator$Person|age").getValue(p)
-            );
+                    (Integer) name2MetaData.get("pl.softech.reflection.SampleDataGenerator$Person|age").getValue(p));
         }
 
         name2MetaData = factory.class2MetaDataByFullPath(Driver.class);
 
         assertEquals(4, name2MetaData.size());
 
-        for(Driver d : drivers) {
+        for (Driver d : drivers) {
 
             Driver.assertDriver(d,
                     (String) name2MetaData.get("pl.softech.reflection.SampleDataGenerator$Driver|lastname").getValue(d),
                     (Float) name2MetaData.get("pl.softech.reflection.SampleDataGenerator$Driver|weight").getValue(d),
                     (Integer) name2MetaData.get("pl.softech.reflection.SampleDataGenerator$Driver|age").getValue(d),
-                    (Boolean) name2MetaData.get("pl.softech.reflection.SampleDataGenerator$Driver|hasDrivingLicense").getValue(d)
-            );
+                    (Boolean) name2MetaData.get("pl.softech.reflection.SampleDataGenerator$Driver|hasDrivingLicense").getValue(d));
 
         }
 
@@ -155,25 +166,23 @@ public class MetaDataTest {
 
         assertEquals(10, name2MetaData.size());
 
-        for(Car c : cars) {
+        for (Car c : cars) {
             Driver.assertDriver(c.getDriver(),
                     (String) name2MetaData.get("pl.softech.reflection.SampleDataGenerator$Car|driver|lastname").getValue(c),
                     (Float) name2MetaData.get("pl.softech.reflection.SampleDataGenerator$Car|driver|weight").getValue(c),
                     (Integer) name2MetaData.get("pl.softech.reflection.SampleDataGenerator$Car|driver|age").getValue(c),
-                    (Boolean) name2MetaData.get("pl.softech.reflection.SampleDataGenerator$Car|driver|hasDrivingLicense").getValue(c)
-            );
-            Driver.assertDriver((Driver)name2MetaData.get("pl.softech.reflection.SampleDataGenerator$Car|driver").getValue(c),
+                    (Boolean) name2MetaData.get("pl.softech.reflection.SampleDataGenerator$Car|driver|hasDrivingLicense").getValue(c));
+            Driver.assertDriver((Driver) name2MetaData.get("pl.softech.reflection.SampleDataGenerator$Car|driver").getValue(c),
                     (String) name2MetaData.get("pl.softech.reflection.SampleDataGenerator$Car|driver|lastname").getValue(c),
                     (Float) name2MetaData.get("pl.softech.reflection.SampleDataGenerator$Car|driver|weight").getValue(c),
                     (Integer) name2MetaData.get("pl.softech.reflection.SampleDataGenerator$Car|driver|age").getValue(c),
-                    (Boolean) name2MetaData.get("pl.softech.reflection.SampleDataGenerator$Car|driver|hasDrivingLicense").getValue(c)
-            );
+                    (Boolean) name2MetaData.get("pl.softech.reflection.SampleDataGenerator$Car|driver|hasDrivingLicense").getValue(c));
             Engine.assertEngine(c.getEngine(),
                     (String) name2MetaData.get("pl.softech.reflection.SampleDataGenerator$Car|engine|productName").getValue(c));
-            Engine.assertEngine((Engine)name2MetaData.get("pl.softech.reflection.SampleDataGenerator$Car|engine").getValue(c),
+            Engine.assertEngine((Engine) name2MetaData.get("pl.softech.reflection.SampleDataGenerator$Car|engine").getValue(c),
                     (String) name2MetaData.get("pl.softech.reflection.SampleDataGenerator$Car|engine|productName").getValue(c));
 
-            Oil.assertOil(c.getEngine().oil, 
+            Oil.assertOil(c.getEngine().oil,
                     (String) name2MetaData.get("pl.softech.reflection.SampleDataGenerator$Car|engine|oil|vendorName").getValue(c),
                     (String) name2MetaData.get("pl.softech.reflection.SampleDataGenerator$Car|engine|oil|producentName").getValue(c));
             Oil.assertOil((Oil) name2MetaData.get("pl.softech.reflection.SampleDataGenerator$Car|engine|oil").getValue(c),
@@ -182,5 +191,4 @@ public class MetaDataTest {
         }
 
     }
-
 }
