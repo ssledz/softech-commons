@@ -51,6 +51,8 @@ public class Server implements Runnable {
     private final WorkerManager workerManager;
     private final IRequestProcessor requestProcessor;
     private ByteBuffer readBuffer;
+    
+    private boolean running = true;
 
     public Server(int port, int backlog, int poolSize, IRequestProcessor requestProcessor) throws IOException {
         this.port = port;
@@ -103,7 +105,7 @@ public class Server implements Runnable {
     @Override
     public void run() {
         logger.info("Starting listening on port: " + port);
-        while (true) {
+        while (running) {
             try {
 
                 processSocketCommands();
@@ -138,6 +140,12 @@ public class Server implements Runnable {
 
     }
 
+    public void shutdown() throws IOException {
+        running = false;
+        selector.close();
+        serverChannel.close();
+    }
+    
     private void accept(SelectionKey key) throws IOException {
         ServerSocketChannel serverSocketChannel = (ServerSocketChannel) key.channel();
         SocketChannel socketChannel = serverSocketChannel.accept();
