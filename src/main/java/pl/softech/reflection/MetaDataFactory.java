@@ -132,7 +132,7 @@ public class MetaDataFactory<T extends Annotation> implements IMetaDataFactory<T
 			return ret;
 		}
 
-		private final Object processValueFrom(Object object)
+		private Object processValueFrom(Object object)
 				throws IllegalArgumentException, IllegalAccessException,
 				IllegalMetaDataUsage {
 
@@ -150,7 +150,7 @@ public class MetaDataFactory<T extends Annotation> implements IMetaDataFactory<T
 
 		}
 
-		private final Object getValueFromMethod(Object object)
+		private Object getValueFromMethod(Object object)
 				throws IllegalArgumentException, IllegalAccessException,
 				IllegalMetaDataUsage, InvocationTargetException {
 
@@ -161,7 +161,7 @@ public class MetaDataFactory<T extends Annotation> implements IMetaDataFactory<T
 			return m.invoke(object, new Object[0]);
 		}
 
-		private final Object getValueFromField(Object object)
+		private Object getValueFromField(Object object)
 				throws IllegalArgumentException, IllegalAccessException,
 				IllegalMetaDataUsage {
 
@@ -173,7 +173,7 @@ public class MetaDataFactory<T extends Annotation> implements IMetaDataFactory<T
 
 		}
 
-		private final boolean processValueSet(Object src, Object value)
+		private boolean processValueSet(Object src, Object value)
 				throws IllegalArgumentException, IllegalMetaDataUsage {
 
 			if (src.getClass() != clazz) {
@@ -191,7 +191,7 @@ public class MetaDataFactory<T extends Annotation> implements IMetaDataFactory<T
 
 		}
 
-		private final void setFieldValue(Object src, Object value)
+		private void setFieldValue(Object src, Object value)
 				throws IllegalMetaDataUsage, IllegalArgumentException,
 				IllegalAccessException {
 
@@ -204,7 +204,7 @@ public class MetaDataFactory<T extends Annotation> implements IMetaDataFactory<T
 
 		}
 
-		private final void setMethodValue(Object src, Object value)
+		private void setMethodValue(Object src, Object value)
 				throws IllegalMetaDataUsage, IllegalArgumentException,
 				IllegalAccessException, InvocationTargetException,
 				NoSuchMethodException {
