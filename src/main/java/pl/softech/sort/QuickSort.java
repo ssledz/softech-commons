@@ -18,7 +18,8 @@ package pl.softech.sort;
 import java.util.Comparator;
 
 /**
- *
+ * avg: O(nlog(n))
+ * worst : O(n^2)
  * @author Sławomir Śledź <slawomir.sledz@sof-tech.pl>
  */
 public class QuickSort<T> implements ISort<T> {

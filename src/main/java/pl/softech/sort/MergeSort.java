@@ -18,7 +18,7 @@ package pl.softech.sort;
 import java.util.Comparator;
 
 /**
- *
+ * O(nlog(n))
  * @author Sławomir Śledź <slawomir.sledz@sof-tech.pl>
  */
 public class MergeSort<T> implements ISort<T> {
