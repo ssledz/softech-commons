@@ -21,7 +21,7 @@ import java.util.Comparator;
  *
  * @author Sławomir Śledź <slawomir.sledz@sof-tech.pl>
  */
-public class QuickSort<T> implements ISort<T> {
+public class NaiveQuickSort<T> implements ISort<T> {
 
     private void swap(T[] arr, int i, int j) {
         T tmp = arr[i];
@@ -31,17 +31,27 @@ public class QuickSort<T> implements ISort<T> {
     
     private int partition(T[] arr, int p, int r, Comparator<T> comparator) {
 
-        T x = arr[r];
-        int i = p - 1;
-        for(int j = p; j < r; j++) {
-            if(comparator.compare(arr[j], x) <= 0) {
-                i++;
-                swap(arr, i, j);
+        int q = (p + r) / 2;
+
+        for(int i = p; i < q; i++) {
+            
+            if(comparator.compare(arr[i], arr[q]) > 0) {
+                swap(arr, i, q);
             }
+            
         }
-        swap(arr, i + 1, r);
         
-        return i + 1;
+        for(int i = q + 1; i <= r; i++) {
+            
+            if(comparator.compare(arr[i], arr[q]) < 0) {
+                swap(arr, i, q + 1);
+                swap(arr, q, q + 1);
+                q++;
+            }
+            
+        }
+        
+        return q;
     }
 
     private void quickSort(T[] arr, int p, int r, Comparator<T> comparator) {
