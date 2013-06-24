@@ -43,5 +43,12 @@ public class HashTableTest {
         assertEquals("Two", table.delete(2));
         assertNull(table.search(2));
         
+        try {
+            table.add(1, "One");
+            fail();
+        } catch(Exception e) {
+        }
+        
+        
     }
 }
