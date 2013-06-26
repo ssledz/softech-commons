@@ -22,7 +22,7 @@ import static org.junit.Assert.*;
  *
  * @author Sławomir Śledź <slawomir.sledz@sof-tech.pl>
  */
-public class HashTableTest {
+public class ChaninedHashTableTest {
 
     /**
      * Test of add method, of class HashTable.
@@ -30,7 +30,7 @@ public class HashTableTest {
     @Test
     public void testHashTable() {
 
-        HashTable<Integer,String> table = new HashTable<Integer, String>(10);
+        ChaninedHashTable<Integer,String> table = new ChaninedHashTable<Integer, String>(10);
         
         table.add(1, "One");
         table.add(2, "Two");

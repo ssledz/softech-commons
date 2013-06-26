@@ -23,7 +23,7 @@ import java.util.List;
  *
  * @author Sławomir Śledź <slawomir.sledz@sof-tech.pl>
  */
-public class HashTable<K,V> {
+public class ChaninedHashTable<K,V> implements IHashTable<K, V> {
 
     private class Entry {
         K key;
@@ -37,7 +37,7 @@ public class HashTable<K,V> {
     
     private List<Entry>[] table;
 
-    public HashTable(int initialCapacity) {
+    public ChaninedHashTable(int initialCapacity) {
 
         table = (List<Entry>[]) new List[initialCapacity];
 
@@ -51,6 +51,7 @@ public class HashTable<K,V> {
         return hash(key) % table.length;
     }
 
+    @Override
     public void add(K key, V value) {
         
         V tmp = search(key);
@@ -65,6 +66,7 @@ public class HashTable<K,V> {
         table[idx].add(new Entry(key, value));
     }
 
+    @Override
     public V delete(K key) {
         List<Entry> list = table[indexOf(key)];
         if (list == null) {
@@ -84,6 +86,7 @@ public class HashTable<K,V> {
         return null;
     }
 
+    @Override
     public V search(K key) {
         int idx = indexOf(key);
         if (table[idx] != null) {
