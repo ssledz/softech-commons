@@ -51,66 +51,9 @@ public class DirectHashTableTest {
 
 
     }
-    
+
     @Test
     public void testHashCodeCollision() {
-        
-        class Key {
-
-            private int key;
-
-            public Key(int key) {
-                this.key = key;
-            }
-            
-            @Override
-            public int hashCode() {
-                return 1;
-            }
-
-            @Override
-            public boolean equals(Object obj) {
-                
-                if(obj == this) {
-                    return true;
-                }
-                
-                if(obj instanceof Key) {
-                    
-                    Key tmp = (Key) obj;
-                    return tmp.key == key;
-                    
-                }
-                
-                return false;
-                
-            }
-            
-            
-            
-        }
-        
-        
-        IMap<Key, String> table = new DirectHashTable<Key, String>(10);
-
-        table.add(new Key(1), "One");
-        table.add(new Key(2), "Two");
-        table.add(new Key(3), "Three");
-
-        assertEquals("One", table.search(new Key(1)));
-        assertEquals("Two", table.search(new Key(2)));
-        assertEquals("Three", table.search(new Key(3)));
-
-        assertEquals("Two", table.delete(new Key(2)));
-        assertNull(table.search(new Key(2)));
-
-        try {
-            table.add(new Key(1), "One");
-            fail();
-        } catch (Exception e) {
-        }
-        
-        
+        TestCollectionUtil.doHashTableHashCodeCollisionTest(new DirectHashTable<TestCollectionUtil.Key, String>(10));
     }
-    
 }

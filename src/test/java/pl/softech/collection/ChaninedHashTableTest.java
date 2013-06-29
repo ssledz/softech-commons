@@ -30,25 +30,30 @@ public class ChaninedHashTableTest {
     @Test
     public void testHashTable() {
 
-        ChaninedHashTable<Integer,String> table = new ChaninedHashTable<Integer, String>(10);
-        
+        ChaninedHashTable<Integer, String> table = new ChaninedHashTable<Integer, String>(10);
+
         table.add(1, "One");
         table.add(2, "Two");
         table.add(3, "Three");
-        
+
         assertEquals("One", table.search(1));
         assertEquals("Two", table.search(2));
         assertEquals("Three", table.search(3));
-        
+
         assertEquals("Two", table.delete(2));
         assertNull(table.search(2));
-        
+
         try {
             table.add(1, "One");
             fail();
-        } catch(Exception e) {
+        } catch (Exception e) {
         }
-        
-        
+
+
+    }
+
+    @Test
+    public void testHashCodeCollision() {
+        TestCollectionUtil.doHashTableHashCodeCollisionTest(new ChaninedHashTable<TestCollectionUtil.Key, String>(10));
     }
 }

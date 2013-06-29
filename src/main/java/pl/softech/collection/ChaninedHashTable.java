@@ -16,16 +16,15 @@
 package pl.softech.collection;
 
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  *
  * @author Sławomir Śledź <slawomir.sledz@sof-tech.pl>
  */
-public class ChaninedHashTable<K,V> implements IMap<K, V> {
+public class ChaninedHashTable<K, V> implements IMap<K, V> {
 
     private class Entry {
+
         K key;
         V value;
 
@@ -34,31 +33,30 @@ public class ChaninedHashTable<K,V> implements IMap<K, V> {
             this.value = value;
         }
     }
-    
-    private List<Entry>[] table;
+    private IList<Entry>[] table;
 
     public ChaninedHashTable(int initialCapacity) {
 
-        table = (List<Entry>[]) new List[initialCapacity];
+        table = (IList<Entry>[]) new IList[initialCapacity];
 
     }
 
     private int hash(K key) {
         return key.hashCode();
     }
-    
+
     private int indexOf(K key) {
         return hash(key) % table.length;
     }
 
     @Override
     public void add(K key, V value) {
-        
+
         V tmp = search(key);
-        if(tmp != null) {
+        if (tmp != null) {
             throw new RuntimeException(String.format("Value %s already exists with key %s", tmp, key));
         }
-        
+
         int idx = indexOf(key);
         if (table[idx] == null) {
             table[idx] = new LinkedList<Entry>();
@@ -68,7 +66,7 @@ public class ChaninedHashTable<K,V> implements IMap<K, V> {
 
     @Override
     public V delete(K key) {
-        List<Entry> list = table[indexOf(key)];
+        IList<Entry> list = table[indexOf(key)];
         if (list == null) {
             return null;
         }
@@ -92,7 +90,7 @@ public class ChaninedHashTable<K,V> implements IMap<K, V> {
         if (table[idx] != null) {
 
             for (Entry e : table[idx]) {
-                if(e.key.equals(key)) {
+                if (e.key.equals(key)) {
                     return e.value;
                 }
             }
