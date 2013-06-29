@@ -19,7 +19,7 @@ package pl.softech.collection;
  *
  * @author Sławomir Śledź <slawomir.sledz@sof-tech.pl>
  */
-public interface IHashTable<K, V> {
+public interface IMap<K, V> {
 
     void add(K key, V value);
 

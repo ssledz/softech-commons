@@ -19,11 +19,10 @@ package pl.softech.collection;
  *
  * @author Sławomir Śledź <slawomir.sledz@sof-tech.pl>
  */
-public interface IList<T> extends ICollection<T> {
-    int indexOf(T element);
+public interface IStack<T> {
     
-    void add(int index, T element);
-    T get(int index);
-    T removeAt(int index);
+    void push(T element);
+    T pop();
+    T peek();
     
 }

@@ -40,6 +40,8 @@ public class LinkedListTest {
         list.add(1);
         list.add(2);
         
+        assertEquals(2, list.size());
+        
         int[] expected = {1, 2};
         int i = 0;
         for(int element : list) {
@@ -54,6 +56,8 @@ public class LinkedListTest {
         list.add(21);
         list.add(27);
         
+        assertEquals(4, list.size());
+        
         assertEquals(21, it.next().intValue());
         assertEquals(27, it.next().intValue());
         
@@ -62,7 +66,26 @@ public class LinkedListTest {
         
         list.remove(21);
         
+        assertEquals(3, list.size());
+        
         assertFalse(list.contains(21));
+        
+        list.add(0, 55);
+        assertEquals(55, list.get(0).intValue());
+        assertEquals(0, list.indexOf(55));
+        
+        assertEquals(4, list.size());
+        
+        i = 0;
+        for(int e : list) {
+            assertEquals(i, list.indexOf(e));
+            assertEquals(e, list.get(i).intValue());
+            i++;
+        }
+        
+        assertEquals(55, list.removeAt(0).intValue());
+        
+        assertEquals(3, list.size());
         
     }
 

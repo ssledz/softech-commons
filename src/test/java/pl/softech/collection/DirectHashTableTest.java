@@ -30,7 +30,7 @@ public class DirectHashTableTest {
     @Test
     public void testHashTable() {
 
-        IHashTable<Integer, String> table = new DirectHashTable<Integer, String>(10);
+        IMap<Integer, String> table = new DirectHashTable<Integer, String>(10);
 
         table.add(1, "One");
         table.add(2, "Two");
@@ -91,7 +91,7 @@ public class DirectHashTableTest {
         }
         
         
-        IHashTable<Key, String> table = new DirectHashTable<Key, String>(10);
+        IMap<Key, String> table = new DirectHashTable<Key, String>(10);
 
         table.add(new Key(1), "One");
         table.add(new Key(2), "Two");

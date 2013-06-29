@@ -19,7 +19,7 @@ package pl.softech.collection;
  *
  * @author Sławomir Śledź <slawomir.sledz@sof-tech.pl>
  */
-public class DirectHashTable<K, V> implements IHashTable<K, V> {
+public class DirectHashTable<K, V> implements IMap<K, V> {
 
     private class Entry<K, V> {
 

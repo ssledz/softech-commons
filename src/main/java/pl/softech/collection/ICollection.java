@@ -19,11 +19,10 @@ package pl.softech.collection;
  *
  * @author Sławomir Śledź <slawomir.sledz@sof-tech.pl>
  */
-public interface IList<T> extends ICollection<T> {
-    int indexOf(T element);
+public interface ICollection<T> extends Iterable<T> {
     
-    void add(int index, T element);
-    T get(int index);
-    T removeAt(int index);
-    
+    void add(T element);
+    boolean remove(T element);
+    boolean contains(T element);
+    int size();
 }

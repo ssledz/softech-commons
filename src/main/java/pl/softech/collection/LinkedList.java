@@ -21,7 +21,24 @@ import java.util.Iterator;
  *
  * @author Sławomir Śledź <slawomir.sledz@sof-tech.pl>
  */
-public class LinkedList<T> implements IList<T> {
+public class LinkedList<T> implements IList<T>, IStack<T> {
+
+    private class Node {
+
+        T data;
+        Node next;
+
+        Node() {
+        }
+
+        Node(T data) {
+            this.data = data;
+            size++;
+        }
+    }
+    private Node head = new Node();
+    private Node tail = head;
+    private int size = 0;
 
     @Override
     public boolean remove(T element) {
@@ -54,31 +71,9 @@ public class LinkedList<T> implements IList<T> {
         return indexOf(element) >= 0;
     }
 
-    private class Node {
-
-        T data;
-        Node next;
-
-        Node() {
-        }
-
-        Node(T data) {
-            this.data = data;
-        }
-    }
-    private Node head = new Node();
-
-    @SuppressWarnings("empty-statement")
     @Override
     public void add(T element) {
-
-        Node t;
-
-        for (t = head; t.next != null; t = t.next) {
-            ;
-        }
-
-        t.next = new Node(element);
+        add(size, element);
     }
 
     @Override
@@ -103,8 +98,105 @@ public class LinkedList<T> implements IList<T> {
             @Override
             public void remove() {
                 prev.next = it.next;
+                size--;
             }
         };
 
+    }
+
+    @Override
+    public void add(int index, T element) {
+
+        Node node = new Node(element);
+
+        if (size <= index) {
+            tail.next = node;
+            tail = node;
+            return;
+        }
+
+        Node t;
+        int i;
+        for (i = 0, t = head; i < index && t.next != null; i++, t = t.next) {
+            ;
+        }
+
+        if (t.next == null) {
+
+            t.next = node;
+            tail = node;
+
+        } else {
+
+            node.next = t.next;
+            t.next = node;
+
+        }
+
+    }
+
+    private void assertIndex(int index) {
+
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException(String.format("Index must be from %d to %d", 0, size - 1));
+        }
+
+    }
+
+    @Override
+    public T get(int index) {
+
+        assertIndex(index);
+
+        if (index == size - 1) {
+            return tail.data;
+        }
+
+        int i = 0;
+        for (T element : this) {
+            if (i++ == index) {
+                return element;
+            }
+        }
+
+        throw new IndexOutOfBoundsException(String.format("Index must be from %d to %d", 0, size - 1));
+    }
+
+    @Override
+    public int size() {
+        return size;
+    }
+
+    @Override
+    public T removeAt(int index) {
+
+        assertIndex(index);
+
+        Iterator<T> it = iterator();
+        T element = null;
+        for (int i = 0; i <= index; i++) {
+            element = it.next();
+        }
+        it.remove();
+
+        return element;
+    }
+
+    @Override
+    public void push(T element) {
+        add(0, element);
+    }
+
+    @Override
+    public T pop() {
+        return removeAt(0);
+    }
+
+    @Override
+    public T peek() {
+        if(size == 0) {
+            return null;
+        }
+        return get(0);
     }
 }

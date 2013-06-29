@@ -23,7 +23,7 @@ import java.util.List;
  *
  * @author Sławomir Śledź <slawomir.sledz@sof-tech.pl>
  */
-public class ChaninedHashTable<K,V> implements IHashTable<K, V> {
+public class ChaninedHashTable<K,V> implements IMap<K, V> {
 
     private class Entry {
         K key;
