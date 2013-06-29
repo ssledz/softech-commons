@@ -22,9 +22,9 @@ import org.junit.Test;
  *
  * @author Sławomir Śledź <slawomir.sledz@sof-tech.pl>
  */
-public class BinaryTreeTest {
+public class BinarySearchTreeTest {
     
-    public BinaryTreeTest() {
+    public BinarySearchTreeTest() {
     }
 
     /**
@@ -32,7 +32,7 @@ public class BinaryTreeTest {
      */
     @Test
     public void testAdd() {
-        BinaryTree<Integer, String> bt = new BinaryTree<Integer, String>(new Comparator<Integer>() {
+        BinarySearchTree<Integer, String> bt = new BinarySearchTree<Integer, String>(new Comparator<Integer>() {
             
             @Override
             public int compare(Integer o1, Integer o2) {

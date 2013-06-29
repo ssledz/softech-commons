@@ -22,7 +22,7 @@ import java.util.Iterator;
  *
  * @author Sławomir Śledź <slawomir.sledz@sof-tech.pl>
  */
-public class BinaryTree<K, V> implements Iterable<IEntry<K, V>>, IMap<K, V> {
+public class BinarySearchTree<K, V> implements Iterable<IEntry<K, V>>, IMap<K, V> {
 
     private static class Entry<K, V> implements IEntry<K, V> {
 
@@ -62,7 +62,7 @@ public class BinaryTree<K, V> implements Iterable<IEntry<K, V>>, IMap<K, V> {
     private Node head;
     private Comparator<K> comparator;
 
-    public BinaryTree(Comparator<K> comparator) {
+    public BinarySearchTree(Comparator<K> comparator) {
         this.comparator = comparator;
         this.head = new Node();
     }
