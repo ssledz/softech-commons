@@ -15,33 +15,17 @@
  */
 package pl.softech.sort;
 
-import java.util.Comparator;
+import org.junit.Test;
 
 /**
- * O(n^2)
+ *
  * @author Sławomir Śledź <slawomir.sledz@sof-tech.pl>
  */
-public class BubbleSort<T> implements ISort<T>  {
+public class HeapSortTest {
 
-    private void swap(T[] arr, int i, int j) {
-        T tmp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = tmp;
+    @Test
+    public void testSort() {
+        HeapSort instance = new HeapSort();
+        TestSortUtil.doIntRandomSortTest(instance, 1000);
     }
-    
-    @Override
-    public void sort(T[] arr, Comparator<T> comparator) {
-        
-        for(int i = 0; i < arr.length; i++) {
-            for(int j = i; j < arr.length; j++) {
-                
-                if(comparator.compare(arr[i], arr[j]) > 0) {
-                    swap(arr, i, j);
-                }
-                
-            }
-        }
-        
-    }
-    
 }

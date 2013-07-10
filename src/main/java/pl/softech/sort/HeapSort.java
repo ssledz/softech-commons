@@ -16,32 +16,22 @@
 package pl.softech.sort;
 
 import java.util.Comparator;
+import pl.softech.collection.Heap;
 
 /**
- * O(n^2)
+ * O(nlog(n))
  * @author Sławomir Śledź <slawomir.sledz@sof-tech.pl>
  */
-public class BubbleSort<T> implements ISort<T>  {
+public class HeapSort<T> implements ISort<T> {
 
-    private void swap(T[] arr, int i, int j) {
-        T tmp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = tmp;
-    }
-    
     @Override
     public void sort(T[] arr, Comparator<T> comparator) {
+        Heap<T> heap = new Heap<T>(arr, comparator);
         
-        for(int i = 0; i < arr.length; i++) {
-            for(int j = i; j < arr.length; j++) {
-                
-                if(comparator.compare(arr[i], arr[j]) > 0) {
-                    swap(arr, i, j);
-                }
-                
-            }
+        heap.buildHeap();
+        
+        while(heap.hasMore()) {
+            heap.extractTop();
         }
-        
     }
-    
 }
