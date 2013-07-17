@@ -30,13 +30,11 @@ public class Heap<T> {
     public Heap(T[] elements, Comparator<T> comparator) {
         this.elements = elements;
         this.comparator = comparator;
-        heapSize = 0;
     }
 
     public Heap(int initialSize, Comparator<T> comparator) {
         this.elements = (T[]) new Object[initialSize];
         this.comparator = comparator;
-        heapSize = 0;
     }
 
     private int leftChild(int parent) {
