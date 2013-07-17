@@ -17,10 +17,8 @@ package pl.softech.graph;
 
 import java.util.Comparator;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 import pl.softech.collection.Heap;
-import pl.softech.sort.HeapSort;
 
 /**
  *
