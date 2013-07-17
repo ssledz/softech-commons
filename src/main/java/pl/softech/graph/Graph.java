@@ -26,19 +26,19 @@ import java.util.List;
  */
 public class Graph<V extends Vertex, E extends Edge> implements Iterable<V> {
 
-    V[] vertexes;
+    V[] vertices;
     private int vertexQuantity;
     private List<E>[] edges;
     
     int time;
 
     public Graph(int initialCapacity) {
-        vertexes = (V[]) new Vertex[initialCapacity];
-        edges = (List<E>[]) new List[vertexes.length];
+        vertices = (V[]) new Vertex[initialCapacity];
+        edges = (List<E>[]) new List[vertices.length];
     }
     
     public Graph(V[] vertexes) {
-        this.vertexes = vertexes;
+        this.vertices = vertexes;
         for(int i = 0; i < vertexes.length; i++) {
             vertexes[i].index = i;
         }
@@ -47,7 +47,7 @@ public class Graph<V extends Vertex, E extends Edge> implements Iterable<V> {
     }
     
     public void addVertex(V vertex) {
-        vertexes[vertexQuantity] = vertex;
+        vertices[vertexQuantity] = vertex;
         vertex.index = vertexQuantity;
         vertexQuantity++;
     }
@@ -94,7 +94,7 @@ public class Graph<V extends Vertex, E extends Edge> implements Iterable<V> {
 
             @Override
             public V next() {
-                return vertexes[it++];
+                return vertices[it++];
             }
 
             @Override

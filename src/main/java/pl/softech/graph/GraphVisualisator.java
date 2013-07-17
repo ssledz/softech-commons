@@ -63,7 +63,7 @@ public class GraphVisualisator extends JPanel {
 
         Point2D[] vcs = new Point2D[graph.getVertexQuantity()];
 
-        for (Vertex v : graph.vertexes) {
+        for (Vertex v : graph.vertices) {
 
             double cx = centerX + r * Math.cos(angle);
             double cy = centerY + r * Math.sin(angle);
@@ -72,7 +72,7 @@ public class GraphVisualisator extends JPanel {
             
         }
         
-        for (Vertex v : graph.vertexes) {
+        for (Vertex v : graph.vertices) {
             Point2D p1 = vcs[v.index];
 
             g2.setColor(Color.BLUE);
@@ -86,7 +86,7 @@ public class GraphVisualisator extends JPanel {
         }
         
         g2.setFont(g2.getFont().deriveFont(16.0f).deriveFont(Font.BOLD));
-        for (Vertex v : graph.vertexes) {
+        for (Vertex v : graph.vertices) {
             Point2D p = vcs[v.index];
             double cx = p.getX();
             double cy = p.getY();

@@ -30,13 +30,13 @@ import pl.softech.util.IFunction;
  */
 public class GraphsTest {
 
-    private int vertexesQuantity = 6;
-    private Graph<Vertex, Edge> graph = new Graph<Vertex, Edge>(vertexesQuantity);
-    private Graph<Vertex, Edge> directedGraph = new Graph<Vertex, Edge>(vertexesQuantity);
+    private int vertexQuantity = 6;
+    private Graph<Vertex, Edge> graph = new Graph<Vertex, Edge>(vertexQuantity);
+    private Graph<Vertex, Edge> directedGraph = new Graph<Vertex, Edge>(vertexQuantity);
 
     public GraphsTest() {
 
-        for (int i = 0; i < vertexesQuantity; i++) {
+        for (int i = 0; i < vertexQuantity; i++) {
             graph.addVertex(new Vertex());
             directedGraph.addVertex(new Vertex());
         }
@@ -74,7 +74,7 @@ public class GraphsTest {
 
         for (Vertex v : graph) {
             Graphs.bfs(graph, v.getIndex());
-            int[] distance = new int[vertexesQuantity];
+            int[] distance = new int[vertexQuantity];
             for (Vertex u : graph) {
                 distance[u.getIndex()] = u.getDistance();
             }
@@ -120,9 +120,9 @@ public class GraphsTest {
         //topological sorted vertexes
         final Integer[] expected = {0, 1, 3, 2, 4, 5};
 
-        Vertex[] vertexes = Graphs.topologicalSort(directedGraph);
+        Vertex[] vertices = Graphs.topologicalSort(directedGraph);
 
-        assertArrayEquals(expected, Arrays.transform(vertexes, new IFunction<Vertex, Integer>() {
+        assertArrayEquals(expected, Arrays.transform(vertices, new IFunction<Vertex, Integer>() {
             @Override
             public Integer apply(Vertex input) {
                 return input.index;

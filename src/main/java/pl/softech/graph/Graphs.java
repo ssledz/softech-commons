@@ -31,13 +31,13 @@ public class Graphs {
      */
     public static void bfs(Graph<Vertex, Edge> grapf, int vertexIndex) {
         
-        for(Vertex v : grapf.vertexes) {
+        for(Vertex v : grapf.vertices) {
             v.paintWhite();
             v.parent = null;
             v.distance = Vertex.MAX_DISTANCE;
         }
         
-        Vertex s = grapf.vertexes[vertexIndex];
+        Vertex s = grapf.vertices[vertexIndex];
         s.distance = 0;
         s.parent = null;
         Queue<Vertex> q = new LinkedList<Vertex>();
@@ -48,7 +48,7 @@ public class Graphs {
             Vertex u = q.remove();
             for(Edge e : grapf.getEdges(u.index)) {
                 
-                Vertex v = grapf.vertexes[e.vertexIndex];
+                Vertex v = grapf.vertices[e.vertexIndex];
                 if(v.colour == Vertex.COLOUR_WHITE) {
                     v.paintGrey();
                     v.distance = u.distance + 1;
@@ -68,7 +68,7 @@ public class Graphs {
         
         for(Edge e : graph.getEdges(vertex.index)) {
             
-            Vertex v = graph.vertexes[e.vertexIndex];
+            Vertex v = graph.vertices[e.vertexIndex];
             if(v.colour == Vertex.COLOUR_WHITE) {
                 v.parent = vertex;
                 dfs(v, graph);
@@ -85,14 +85,14 @@ public class Graphs {
      */
     public static void dfs(Graph<Vertex, Edge> graph) {
         
-        for(Vertex v : graph.vertexes) {
+        for(Vertex v : graph.vertices) {
             v.paintWhite();
             v.parent = null;
             v.startTime = 0;
             v.endTime = 0;
         }
         graph.time = 0;
-        for(Vertex v : graph.vertexes) {
+        for(Vertex v : graph.vertices) {
             if(v.colour == Vertex.COLOUR_WHITE) {
                 dfs(v, graph);
             }
