@@ -15,13 +15,17 @@
  */
 package pl.softech.collection;
 
+import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
+
 /**
  *
  * @author Sławomir Śledź <slawomir.sledz@sof-tech.pl>
  */
-public class DirectHashTable<K, V> implements IMap<K, V> {
+public class DirectHashTable<K, V> implements Map<K, V> {
 
-    private class Entry<K, V> {
+    private class Entry<K, V> implements Map.Entry<K, V> {
 
         K key;
         V value;
@@ -30,28 +34,47 @@ public class DirectHashTable<K, V> implements IMap<K, V> {
             this.key = key;
             this.value = value;
         }
+
+        @Override
+        public K getKey() {
+            return key;
+        }
+
+        @Override
+        public V getValue() {
+            return value;
+        }
+
+        @Override
+        public V setValue(V value) {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
     }
     private Entry<K, V>[] table;
+    private int size;
 
     public DirectHashTable(int initialCapacity) {
         table = new Entry[initialCapacity];
     }
 
-    private int hash(K key, int index) {
+    private int hash(Object key, int index) {
         return (key.hashCode() + index) % table.length;
     }
 
     @Override
-    public void add(K key, V value) {
+    public V put(K key, V value) {
 
         for (int i = 0; i < table.length; i++) {
 
             int index = hash(key, i);
             if (table[index] == null) {
                 table[index] = new Entry(key, value);
-                return;
+                size++;
+                return null;
             } else if (key.equals(table[index].key)) {
-                throw new RuntimeException(String.format("Value %s already exists with key %s", table[index].value, key));
+                V ret = table[index].value;
+                table[index].value = value;
+                return ret;
             }
 
         }
@@ -60,7 +83,7 @@ public class DirectHashTable<K, V> implements IMap<K, V> {
 
     }
 
-    private int indexOf(K key) {
+    private int indexOf(Object key) {
         for (int i = 0; i < table.length; i++) {
             int index = hash(key, i);
             if (table[index] != null && key.equals(table[index].key)) {
@@ -71,13 +94,14 @@ public class DirectHashTable<K, V> implements IMap<K, V> {
     }
 
     @Override
-    public V delete(K key) {
+    public V remove(Object key) {
 
         int index = indexOf(key);
 
         if (index > -1) {
             V value = table[index].value;
             table[index] = null;
+            size--;
             return value;
         }
 
@@ -85,7 +109,7 @@ public class DirectHashTable<K, V> implements IMap<K, V> {
     }
 
     @Override
-    public V search(K key) {
+    public V get(Object key) {
         int index = indexOf(key);
 
         if (index > -1) {
@@ -93,5 +117,51 @@ public class DirectHashTable<K, V> implements IMap<K, V> {
         }
 
         return null;
+    }
+    
+    
+    @Override
+    public int size() {
+        return size;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+    @Override
+    public boolean containsKey(Object key) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean containsValue(Object value) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void putAll(Map<? extends K, ? extends V> m) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void clear() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<K> keySet() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Collection<V> values() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Map.Entry<K, V>> entrySet() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

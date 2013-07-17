@@ -16,7 +16,9 @@
 package pl.softech.collection;
 
 import java.util.Comparator;
+import java.util.Map;
 import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  *
@@ -40,19 +42,22 @@ public class BinarySearchTreeTest {
             }
         });
         
+        assertTrue(bt.isEmpty());
         
-        bt.add(5, "5");
-        bt.add(1, "1");
-        bt.add(7, "7");
-        bt.add(4, "4");
-        bt.add(2, "2");
-        bt.add(3, "3");
-        bt.add(6, "6");
+        bt.put(5, "5");
+        bt.put(1, "1");
+        bt.put(7, "7");
+        bt.put(4, "4");
+        bt.put(2, "2");
+        bt.put(3, "3");
+        bt.put(6, "6");
         
-        //bt.printAll();
+        assertFalse(bt.isEmpty());
         
-        for(IEntry<Integer, String> el : bt) {
-            System.out.println(el.getValue());
+        int[] expected = {1, 2, 3, 4, 5, 6, 7};
+        int i = 0;
+        for(Map.Entry<Integer, String> el : bt) {
+            assertEquals(expected[i++], el.getKey().intValue());
         }
     }
 }

@@ -15,15 +15,18 @@
  */
 package pl.softech.collection;
 
+import java.util.Collection;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 /**
  *
  * @author Sławomir Śledź <slawomir.sledz@sof-tech.pl>
  */
-public class ChaninedHashTable<K, V> implements IMap<K, V> {
+public class ChaninedHashTable<K, V> implements Map<K, V> {
 
-    private class Entry {
+    private class Entry implements Map.Entry {
 
         K key;
         V value;
@@ -32,8 +35,24 @@ public class ChaninedHashTable<K, V> implements IMap<K, V> {
             this.key = key;
             this.value = value;
         }
+
+        @Override
+        public Object getKey() {
+            return key;
+        }
+
+        @Override
+        public Object getValue() {
+            return value;
+        }
+
+        @Override
+        public Object setValue(Object value) {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
     }
     private IList<Entry>[] table;
+    private int size;
 
     public ChaninedHashTable(int initialCapacity) {
 
@@ -41,20 +60,20 @@ public class ChaninedHashTable<K, V> implements IMap<K, V> {
 
     }
 
-    private int hash(K key) {
+    private int hash(Object key) {
         return key.hashCode();
     }
 
-    private int indexOf(K key) {
+    private int indexOf(Object key) {
         return hash(key) % table.length;
     }
 
     @Override
-    public void add(K key, V value) {
+    public V put(K key, V value) {
 
-        V tmp = search(key);
+        V tmp = get(key);
         if (tmp != null) {
-            throw new RuntimeException(String.format("Value %s already exists with key %s", tmp, key));
+            remove(key);
         }
 
         int idx = indexOf(key);
@@ -62,10 +81,14 @@ public class ChaninedHashTable<K, V> implements IMap<K, V> {
             table[idx] = new LinkedList<Entry>();
         }
         table[idx].add(new Entry(key, value));
+
+        size++;
+
+        return tmp;
     }
 
     @Override
-    public V delete(K key) {
+    public V remove(Object key) {
         IList<Entry> list = table[indexOf(key)];
         if (list == null) {
             return null;
@@ -76,6 +99,7 @@ public class ChaninedHashTable<K, V> implements IMap<K, V> {
             Entry e = it.next();
             if (e.key.equals(key)) {
                 it.remove();
+                size--;
                 return e.value;
             }
         }
@@ -85,7 +109,7 @@ public class ChaninedHashTable<K, V> implements IMap<K, V> {
     }
 
     @Override
-    public V search(K key) {
+    public V get(Object key) {
         int idx = indexOf(key);
         if (table[idx] != null) {
 
@@ -97,5 +121,50 @@ public class ChaninedHashTable<K, V> implements IMap<K, V> {
 
         }
         return null;
+    }
+
+    @Override
+    public int size() {
+        return size;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+    @Override
+    public boolean containsKey(Object key) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean containsValue(Object value) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void putAll(Map<? extends K, ? extends V> m) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void clear() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<K> keySet() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Collection<V> values() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Set<Map.Entry<K, V>> entrySet() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

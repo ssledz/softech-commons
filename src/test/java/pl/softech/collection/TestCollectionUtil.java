@@ -15,6 +15,7 @@
  */
 package pl.softech.collection;
 
+import java.util.Map;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
@@ -57,25 +58,18 @@ public class TestCollectionUtil {
         }
     }
 
-    public static void doHashTableHashCodeCollisionTest(IMap<Key, String> hashTableToTest) {
+    public static void doHashTableHashCodeCollisionTest(Map<Key, String> hashTableToTest) {
 
-        hashTableToTest.add(new Key(1), "One");
-        hashTableToTest.add(new Key(2), "Two");
-        hashTableToTest.add(new Key(3), "Three");
+        hashTableToTest.put(new Key(1), "One");
+        hashTableToTest.put(new Key(2), "Two");
+        hashTableToTest.put(new Key(3), "Three");
 
-        assertEquals("One", hashTableToTest.search(new Key(1)));
-        assertEquals("Two", hashTableToTest.search(new Key(2)));
-        assertEquals("Three", hashTableToTest.search(new Key(3)));
+        assertEquals("One", hashTableToTest.get(new Key(1)));
+        assertEquals("Two", hashTableToTest.get(new Key(2)));
+        assertEquals("Three", hashTableToTest.get(new Key(3)));
 
-        assertEquals("Two", hashTableToTest.delete(new Key(2)));
-        assertNull(hashTableToTest.search(new Key(2)));
-
-        try {
-            hashTableToTest.add(new Key(1), "One");
-            fail();
-        } catch (Exception e) {
-        }
-
+        assertEquals("Two", hashTableToTest.remove(new Key(2)));
+        assertNull(hashTableToTest.get(new Key(2)));
 
     }
 }

@@ -15,6 +15,7 @@
  */
 package pl.softech.collection;
 
+import java.util.Map;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -30,25 +31,31 @@ public class DirectHashTableTest {
     @Test
     public void testHashTable() {
 
-        IMap<Integer, String> table = new DirectHashTable<Integer, String>(10);
+        Map<Integer, String> table = new DirectHashTable<Integer, String>(10);
 
-        table.add(1, "One");
-        table.add(2, "Two");
-        table.add(3, "Three");
+        table.put(1, "One");
+        table.put(2, "Two");
+        table.put(3, "Three");
+        
+        assertEquals(3, table.size());
 
-        assertEquals("One", table.search(1));
-        assertEquals("Two", table.search(2));
-        assertEquals("Three", table.search(3));
+        assertEquals("One", table.get(1));
+        assertEquals("Two", table.get(2));
+        assertEquals("Three", table.get(3));
 
-        assertEquals("Two", table.delete(2));
-        assertNull(table.search(2));
+        assertEquals("Two", table.remove(2));
+        assertEquals(2, table.size());
+        assertNull(table.get(2));
+        
 
-        try {
-            table.add(1, "One");
-            fail();
-        } catch (Exception e) {
-        }
-
+        assertEquals("One", table.put(1, "One1"));
+        assertEquals("One1", table.get(1));
+        assertEquals(2, table.size());
+        
+        table.remove(1);
+        table.remove(3);
+        
+        assertTrue(table.isEmpty());
 
     }
 
