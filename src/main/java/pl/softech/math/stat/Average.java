@@ -25,6 +25,9 @@ public class Average {
 
     /**
      * Simple Moving Average
+     * 
+     * @param arg point series
+     * @param count number of points that was taken into consideration
      */
     public static double[] sma(double[] arg, int count) {
         
@@ -51,6 +54,9 @@ public class Average {
     
     /**
      * Linear Weighted Moving Average
+     * 
+     * @param arg point series
+     * @param count number of points that was taken into consideration
      */
    public static double[] lwma(double[] arg, int count) {
         
@@ -90,6 +96,10 @@ public class Average {
     
     /**
      * Exponential Moving Average
+     * 
+     * @param arg point series
+     * @param count number of points that was taken into consideration
+     * 
      */
    public static double[] ema(double[] arg, double weight, int count) {
        
