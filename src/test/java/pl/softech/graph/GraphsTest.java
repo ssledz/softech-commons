@@ -16,13 +16,13 @@
 package pl.softech.graph;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import javax.management.ImmutableDescriptor;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import pl.softech.util.Arrays;
+import pl.softech.util.IFunction;
 
 /**
  *
@@ -30,21 +30,30 @@ import static org.junit.Assert.*;
  */
 public class GraphsTest {
 
-    private Graph<Vertex, Edge> graph = new Graph<Vertex, Edge>(6);
     private int vertexesQuantity = 6;
+    private Graph<Vertex, Edge> graph = new Graph<Vertex, Edge>(vertexesQuantity);
+    private Graph<Vertex, Edge> directedGraph = new Graph<Vertex, Edge>(vertexesQuantity);
 
     public GraphsTest() {
 
         for (int i = 0; i < vertexesQuantity; i++) {
             graph.addVertex(new Vertex());
+            directedGraph.addVertex(new Vertex());
         }
 
+        directedGraph.addEdges(0, new Edge(1));
+        directedGraph.addEdges(1, new Edge(5), new Edge(3));
+        directedGraph.addEdges(3, new Edge(4), new Edge(2));
+        directedGraph.addEdges(4, new Edge(5));
+        
         graph.addEdges(0, new Edge(1), new Edge(2));
         graph.addEdges(1, new Edge(0), new Edge(2));
         graph.addEdges(2, new Edge(3), new Edge(0), new Edge(1));
         graph.addEdges(3, new Edge(4), new Edge(2));
         graph.addEdges(4, new Edge(3));
 
+        
+        
     }
 
     /**
@@ -81,27 +90,44 @@ public class GraphsTest {
     @Test
     public void testDfs() {
 
-        final int[] expectedVisited = {4, 3, 2, 1, 0, 5};
+        final int[] expectedVisited = {0, 1, 2, 3, 4, 5};
 
         Graphs.dfs(graph);
 
         List<Vertex> vs = new ArrayList<Vertex>();
-        
-        for(Vertex v : graph) {
+
+        for (Vertex v : graph) {
             vs.add(v);
         }
-        
+
         Collections.sort(vs, new Comparator<Vertex>() {
             @Override
             public int compare(Vertex o1, Vertex o2) {
-                return o2.startTime - o1.startTime;
+                return o1.startTime - o2.startTime;
             }
         });
-        
+
         int i = 0;
-        for(Vertex v : vs) {
+        for (Vertex v : vs) {
             assertEquals(expectedVisited[i++], v.index);
         }
-        
+
+    }
+
+    @Test
+    public void testTopologicalSort() {
+
+        //topological sorted vertexes
+        final Integer[] expected = {0, 1, 3, 2, 4, 5};
+
+        Vertex[] vertexes = Graphs.topologicalSort(directedGraph);
+
+        assertArrayEquals(expected, Arrays.transform(vertexes, new IFunction<Vertex, Integer>() {
+            @Override
+            public Integer apply(Vertex input) {
+                return input.index;
+            }
+        }));
+
     }
 }

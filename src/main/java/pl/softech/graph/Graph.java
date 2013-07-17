@@ -29,6 +29,8 @@ public class Graph<V extends Vertex, E extends Edge> implements Iterable<V> {
     V[] vertexes;
     private int vertexQuantity;
     private List<E>[] edges;
+    
+    int time;
 
     public Graph(int initialCapacity) {
         vertexes = (V[]) new Vertex[initialCapacity];

@@ -15,8 +15,12 @@
  */
 package pl.softech.graph;
 
+import java.util.Comparator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
+import pl.softech.collection.Heap;
+import pl.softech.sort.HeapSort;
 
 /**
  *
@@ -59,9 +63,9 @@ public class Graphs {
         
     }
     
-    private static void dfs(Vertex vertex, Graph<Vertex, Edge> graph, int time) {
+    private static void dfs(Vertex vertex, Graph<Vertex, Edge> graph) {
         
-        vertex.startTime = ++time;
+        vertex.startTime = ++graph.time;
         vertex.paintGrey();
         
         for(Edge e : graph.getEdges(vertex.index)) {
@@ -69,13 +73,13 @@ public class Graphs {
             Vertex v = graph.vertexes[e.vertexIndex];
             if(v.colour == Vertex.COLOUR_WHITE) {
                 v.parent = vertex;
-                dfs(v, graph, time);
+                dfs(v, graph);
             }
             
         }
         
         vertex.paintBlack();
-        vertex.endTime = ++time;
+        vertex.endTime = ++graph.time;
         
     }
     /**
@@ -86,14 +90,46 @@ public class Graphs {
         for(Vertex v : graph.vertexes) {
             v.paintWhite();
             v.parent = null;
+            v.startTime = 0;
+            v.endTime = 0;
         }
-        int time = 0;
+        graph.time = 0;
         for(Vertex v : graph.vertexes) {
             if(v.colour == Vertex.COLOUR_WHITE) {
-                dfs(v, graph, time);
+                dfs(v, graph);
             }
         }
         
+    }
+    
+    /**
+     * O(E + VlgV)
+     */
+    public static Vertex[] topologicalSort(Graph<Vertex, Edge> graph) {
+        
+        //traversing graph O(V+E)
+        dfs(graph);
+        Vertex[] vertexes = new Vertex[graph.getVertexQuantity()];
+        Heap<Vertex> heap = new Heap<Vertex>(vertexes, new Comparator<Vertex>() {
+            @Override
+            public int compare(Vertex o1, Vertex o2) {
+                return o2.endTime - o1.endTime;
+            }
+        });
+        
+        //building heap O(VlgV)
+        for(Vertex v : graph) {
+            heap.addElement(v);
+        }
+        
+        //extracting all elements O(V)
+        while(heap.hasMore()) {
+            heap.extractTop();
+        }
+        
+        //overall O(V+VlgV + V + E) = O(E + VlgV)
+        
+        return vertexes;
     }
     
     

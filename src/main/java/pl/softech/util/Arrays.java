@@ -84,4 +84,23 @@ public class Arrays {
     public static <T> int binSearch(T[] array, T value, Comparator<T> comparator) {
         return binSearch1(array, value, 0, array.length - 1, comparator);
     }
+    
+    /**
+     * Transforms one array into another
+     * 
+     * @param array input array
+     * @param function transformation
+     * @return transformed array
+     */
+    public static <I, R> R[] transform(I[] array, IFunction<I, R> function) {
+        
+        R[] r = (R[]) new Object[array.length];
+        
+        for(int i = 0; i < r.length; i++) {
+            r[i] = function.apply(array[i]);
+        }
+        
+        
+        return r;
+    }
 }
