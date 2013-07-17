@@ -21,11 +21,31 @@ package pl.softech.collection;
  */
 public class BitArray {
 
+    private interface Command {
+        void execute(int index, int bit);
+    }
+    
     private static final int INT_SIZE = 32;
     private static final int MASK_MOST_SIG_BIT_SET = 1 << (INT_SIZE - 1);
     private static final int MASK_NEXT_MOST_SIG_BIT_SET = 1 << (INT_SIZE - 2);
     private int[] bits;
     private int size;
+    
+    private Command bitSetCommand = new Command() {
+
+        @Override
+        public void execute(int index, int bit) {
+            bits[index] |= bit;
+        }
+    };
+    
+    private Command bitUnSetCommand = new Command() {
+
+        @Override
+        public void execute(int index, int bit) {
+             bits[index] &= ~bit;
+        }
+    };
 
     public BitArray(int size) {
         bits = new int[1 + (size - 1) / INT_SIZE];
@@ -45,18 +65,31 @@ public class BitArray {
         return MASK_NEXT_MOST_SIG_BIT_SET >> (shift - 1);
     }
 
-    public boolean set(int bitNumber) {
+    private boolean executeBitCommand(int bitNumber, Command command) {
         int index = (int) (bitNumber / INT_SIZE);
-        int bit2set = bit2Set(bitNumber);
-        boolean last = (bits[index] & bit2set) > 0;
-        bits[index] |= bit2set;
+        int bit = bit2Set(bitNumber);
+        boolean last = (bits[index] & bit) > 0;
+        command.execute(index, bit);
         return last;
+        
+    }
+    
+    public boolean set(int bitNumber) {
+        return executeBitCommand(bitNumber, bitSetCommand);
+    }
+    
+    public boolean unset(int bitNumber) {
+        return executeBitCommand(bitNumber, bitUnSetCommand);
+    }
+    
+    private boolean isSet(int bitNumber, int index, int bit) {
+        return (bits[index] & bit) != 0;
     }
 
     public boolean isSet(int bitNumber) {
         int index = (int) (bitNumber / INT_SIZE);
         int bit = bit2Set(bitNumber);
-        return (bits[index] & bit) != 0;
+        return isSet(bitNumber, index, bit);
     }
 
     @Override
@@ -78,6 +111,15 @@ public class BitArray {
             System.out.println(ba);
         }
         ba.set(124);
+        System.out.println(ba);
+        
+        
+        for (int i = 0; i < 100; i += 2) {
+            ba.unset(i);
+            System.out.println(ba);
+        }
+        
+        ba.unset(124);
         System.out.println(ba);
     }
 }
