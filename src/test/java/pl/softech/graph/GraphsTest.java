@@ -45,15 +45,15 @@ public class GraphsTest {
         directedGraph.addEdges(1, new Edge(5), new Edge(3));
         directedGraph.addEdges(3, new Edge(4), new Edge(2));
         directedGraph.addEdges(4, new Edge(5));
-        
+
         graph.addEdges(0, new Edge(1), new Edge(2));
         graph.addEdges(1, new Edge(0), new Edge(2));
         graph.addEdges(2, new Edge(3), new Edge(0), new Edge(1));
         graph.addEdges(3, new Edge(4), new Edge(2));
         graph.addEdges(4, new Edge(3));
 
-        
-        
+
+
     }
 
     /**
@@ -117,7 +117,7 @@ public class GraphsTest {
     @Test
     public void testTopologicalSort() {
 
-        //topological sorted vertexes
+        //topological sorted vertices
         final Integer[] expected = {0, 1, 3, 2, 4, 5};
 
         Vertex[] vertices = Graphs.topologicalSort(directedGraph);
@@ -128,6 +128,50 @@ public class GraphsTest {
                 return input.index;
             }
         }));
+
+    }
+
+    @Test
+    public void testScc() {
+
+        Graph<Vertex, Edge> lgraph = new Graph<Vertex, Edge>(8);
+        for (int i = 0; i < 8; i++) {
+            lgraph.addVertex(new Vertex());
+        }
+
+        lgraph.addEdges(0, new Edge(1));
+        lgraph.addEdges(1, new Edge(2), new Edge(4), new Edge(5));
+        lgraph.addEdges(2, new Edge(3), new Edge(6));
+        lgraph.addEdges(3, new Edge(2), new Edge(7));
+        lgraph.addEdges(4, new Edge(0), new Edge(5));
+        lgraph.addEdges(5, new Edge(6));
+        lgraph.addEdges(6, new Edge(5), new Edge(7));
+        lgraph.addEdges(7, new Edge(7));
+
+        Vertex[] vertices = Graphs.scc(lgraph);
+
+        assertArrayEquals(new Integer[]{0, 4, 1, 2, 3, 6, 5, 7},
+                
+                Arrays.transform(vertices, new IFunction<Vertex, Integer>() {
+                    
+                    @Override
+                    public Integer apply(Vertex input) {
+                        return input.index;
+                    }
+                })
+        );
+
+        //4 strongly connected components
+        assertArrayEquals(new Integer[]{null, 0, 4, null, 2, null, 6, null}, 
+                
+                Arrays.transform(vertices, new IFunction<Vertex, Integer>() {
+                    
+                    @Override
+                    public Integer apply(Vertex input) {
+                        return input.parent == null ? null : input.parent.index;
+                    }
+                })
+        );
 
     }
 }

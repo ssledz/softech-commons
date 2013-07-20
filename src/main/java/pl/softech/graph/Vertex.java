@@ -19,29 +19,22 @@ package pl.softech.graph;
  *
  * @author Sławomir Śledź <slawomir.sledz@sof-tech.pl>
  */
-public class Vertex {
-    
+public class Vertex implements Cloneable {
+
     public static final int COLOUR_WHITE = 0;
     public static final int COLOUR_GREY = 1;
     public static final int COLOUR_BLACK = 2;
     public static final int MAX_DISTANCE = Integer.MAX_VALUE;
-    
     protected int colour;
-    
     protected int index;
-    
     protected int distance;
-    
     protected Vertex parent;
-    
     /**
-     * Label time, step number of calculations in which the vertex is visited 
+     * Label time, step number of calculations in which the vertex is visited
      */
-    protected int startTime; 
-    
+    protected int startTime;
     /**
-     * label time, step number of calculations in which the neighborhood 
-     * list of vertices is examined 
+     * label time, step number of calculations in which the neighborhood list of vertices is examined
      */
     protected int endTime;
 
@@ -52,17 +45,32 @@ public class Vertex {
     public int getIndex() {
         return index;
     }
-    
+
     public void paintBlack() {
         colour = COLOUR_BLACK;
     }
-    
+
     public void paintWhite() {
         colour = COLOUR_WHITE;
     }
-    
+
     public void paintGrey() {
         colour = COLOUR_GREY;
     }
-    
+
+    @Override
+    public Vertex clone() {
+        Vertex v = null;
+        try {
+            v = (Vertex) super.clone();
+            v.parent = null;
+            v.distance = 0;
+            v.colour = COLOUR_WHITE;
+            v.startTime = 0;
+            v.endTime = 0;
+        } catch (CloneNotSupportedException ex) {
+            ex.printStackTrace();
+        }
+        return v;
+    }
 }

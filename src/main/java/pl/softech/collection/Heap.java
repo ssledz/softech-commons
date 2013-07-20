@@ -80,6 +80,10 @@ public class Heap<T> {
 
     }
 
+    public void setComparator(Comparator<T> comparator) {
+        this.comparator = comparator;
+    }
+    
     private void shiftDown(int heapSize) {
 
         int i;

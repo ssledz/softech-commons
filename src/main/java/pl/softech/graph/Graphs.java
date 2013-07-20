@@ -25,31 +25,31 @@ import pl.softech.collection.Heap;
  * @author Sławomir Śledź <slawomir.sledz@sof-tech.pl>
  */
 public class Graphs {
-    
+
     /**
      * Breadth-first search
      */
     public static void bfs(Graph<Vertex, Edge> grapf, int vertexIndex) {
-        
-        for(Vertex v : grapf.vertices) {
+
+        for (Vertex v : grapf.vertices) {
             v.paintWhite();
             v.parent = null;
             v.distance = Vertex.MAX_DISTANCE;
         }
-        
+
         Vertex s = grapf.vertices[vertexIndex];
         s.distance = 0;
         s.parent = null;
         Queue<Vertex> q = new LinkedList<Vertex>();
         q.add(s);
-        
-        while(!q.isEmpty()) {
-            
+
+        while (!q.isEmpty()) {
+
             Vertex u = q.remove();
-            for(Edge e : grapf.getEdges(u.index)) {
-                
+            for (Edge e : grapf.getEdges(u.index)) {
+
                 Vertex v = grapf.vertices[e.vertexIndex];
-                if(v.colour == Vertex.COLOUR_WHITE) {
+                if (v.colour == Vertex.COLOUR_WHITE) {
                     v.paintGrey();
                     v.distance = u.distance + 1;
                     v.parent = u;
@@ -58,77 +58,131 @@ public class Graphs {
             }
             u.paintBlack();
         }
-        
+
     }
-    
+
     private static void dfs(Vertex vertex, Graph<Vertex, Edge> graph) {
-        
+
         vertex.startTime = ++graph.time;
         vertex.paintGrey();
-        
-        for(Edge e : graph.getEdges(vertex.index)) {
-            
+
+        for (Edge e : graph.getEdges(vertex.index)) {
+
             Vertex v = graph.vertices[e.vertexIndex];
-            if(v.colour == Vertex.COLOUR_WHITE) {
+            if (v.colour == Vertex.COLOUR_WHITE) {
                 v.parent = vertex;
                 dfs(v, graph);
             }
-            
+
         }
-        
+
         vertex.paintBlack();
         vertex.endTime = ++graph.time;
-        
+
     }
+
     /**
      * Depth-first search
      */
     public static void dfs(Graph<Vertex, Edge> graph) {
-        
-        for(Vertex v : graph.vertices) {
+        dfs(graph, graph.vertices);
+    }
+
+    private static void dfs(Graph<Vertex, Edge> graph, Vertex[] vertices) {
+        for (Vertex v : graph.vertices) {
             v.paintWhite();
             v.parent = null;
             v.startTime = 0;
             v.endTime = 0;
         }
         graph.time = 0;
-        for(Vertex v : graph.vertices) {
-            if(v.colour == Vertex.COLOUR_WHITE) {
+        for (Vertex v : vertices) {
+            if (v.colour == Vertex.COLOUR_WHITE) {
                 dfs(v, graph);
             }
         }
-        
     }
-    
+
     /**
      * O(E + VlgV)
      */
     public static Vertex[] topologicalSort(Graph<Vertex, Edge> graph) {
-        
+
         //traversing graph O(V+E)
         dfs(graph);
-        Vertex[] vertexes = new Vertex[graph.getVertexQuantity()];
-        Heap<Vertex> heap = new Heap<Vertex>(vertexes, new Comparator<Vertex>() {
+        Vertex[] vertices = new Vertex[graph.getVertexQuantity()];
+        Heap<Vertex> heap = new Heap<Vertex>(vertices, new Comparator<Vertex>() {
             @Override
             public int compare(Vertex o1, Vertex o2) {
                 return o2.endTime - o1.endTime;
             }
         });
-        
+
         //building heap O(VlgV)
-        for(Vertex v : graph) {
+        for (Vertex v : graph) {
             heap.addElement(v);
         }
-        
+
         //extracting all elements O(V)
-        while(heap.hasMore()) {
+        while (heap.hasMore()) {
             heap.extractTop();
         }
-        
+
         //overall O(V+VlgV + V + E) = O(E + VlgV)
-        
-        return vertexes;
+
+        return vertices;
     }
-    
-    
+
+    /**
+     * Strongly connected components
+     * 
+     * @return array of strongly connected components in following order
+     * [v[0](parent==null)...v[i-1] v[i](parent==null)...v[j-1] v[j](parent==null)...]
+     * Each verticle with parent == null is a head of strongly connected component
+     */
+    public static Vertex[] scc(final Graph<Vertex, Edge> graph) {
+
+        dfs(graph);
+        Graph<Vertex, Edge> tgraph = graph.clone();
+        tgraph.transpose();
+
+        Vertex[] vertices = new Vertex[graph.getVertexQuantity()];
+
+        Heap<Vertex> heap = new Heap<Vertex>(vertices, new Comparator<Vertex>() {
+            @Override
+            public int compare(Vertex o1, Vertex o2) {
+                return graph.vertices[o2.index].endTime - graph.vertices[o1.index].endTime;
+            }
+        });
+
+        //building heap O(VlgV)
+        for (Vertex v : tgraph) {
+            heap.addElement(v);
+        }
+
+        //extracting all elements O(V)
+        while (heap.hasMore()) {
+            heap.extractTop();
+        }
+
+        dfs(tgraph, vertices);
+
+        heap.setComparator(new Comparator<Vertex>() {
+            @Override
+            public int compare(Vertex o1, Vertex o2) {
+                return o1.startTime - o2.startTime;
+            }
+        });
+
+        for (Vertex v : tgraph) {
+            heap.addElement(v);
+        }
+
+        //extracting all elements O(V)
+        while (heap.hasMore()) {
+            heap.extractTop();
+        }
+
+        return vertices;
+    }
 }

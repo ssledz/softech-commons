@@ -19,12 +19,23 @@ package pl.softech.graph;
  *
  * @author Sławomir Śledź <slawomir.sledz@sof-tech.pl>
  */
-public class Edge {
-   
+public class Edge implements Cloneable {
+
     protected int vertexIndex;
 
     public Edge(int vertexIndex) {
         this.vertexIndex = vertexIndex;
     }
-    
+
+    @Override
+    public Edge clone() {
+
+        try {
+            return (Edge) super.clone();
+        } catch (CloneNotSupportedException ex) {
+            ex.printStackTrace();
+        }
+
+        return null;
+    }
 }
