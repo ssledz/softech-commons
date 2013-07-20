@@ -36,9 +36,9 @@ public class GraphTest {
             graph.addVertex(new Vertex());
         }
 
-        graph.addEdges(0, new Edge(0), new Edge(1), new Edge(2));
-        graph.addEdges(1, new Edge(2));
-        graph.addEdges(2, new Edge(3));
+        graph.addEdges(new Edge(0, 0), new Edge(0, 1), new Edge(0, 2));
+        graph.addEdges(new Edge(1, 2));
+        graph.addEdges(new Edge(2, 3));
 
         Runnable beforeTranspose = new Runnable() {
             @Override
@@ -47,16 +47,16 @@ public class GraphTest {
                 assertEquals(0, graph.getEdges(3).size());
 
                 assertEquals(1, graph.getEdges(2).size());
-                assertEquals(3, graph.getEdges(2).get(0).vertexIndex);
+                assertEquals(3, graph.getEdges(2).get(0).vVertexIndex);
 
                 assertEquals(1, graph.getEdges(1).size());
-                assertEquals(2, graph.getEdges(1).get(0).vertexIndex);
+                assertEquals(2, graph.getEdges(1).get(0).vVertexIndex);
 
                 assertEquals(3, graph.getEdges(0).size());
                 int[] verticies = {
-                    graph.getEdges(0).get(0).vertexIndex,
-                    graph.getEdges(0).get(1).vertexIndex,
-                    graph.getEdges(0).get(2).vertexIndex
+                    graph.getEdges(0).get(0).vVertexIndex,
+                    graph.getEdges(0).get(1).vVertexIndex,
+                    graph.getEdges(0).get(2).vVertexIndex
                 };
                 Arrays.sort(verticies);
                 assertArrayEquals(new int[]{0, 1, 2}, verticies);
@@ -69,16 +69,16 @@ public class GraphTest {
         graph.transpose();
 
         assertEquals(1, graph.getEdges(3).size());
-        assertEquals(2, graph.getEdges(3).get(0).vertexIndex);
+        assertEquals(2, graph.getEdges(3).get(0).vVertexIndex);
 
         assertEquals(1, graph.getEdges(0).size());
-        assertEquals(0, graph.getEdges(0).get(0).vertexIndex);
+        assertEquals(0, graph.getEdges(0).get(0).vVertexIndex);
 
         assertEquals(1, graph.getEdges(1).size());
-        assertEquals(0, graph.getEdges(1).get(0).vertexIndex);
+        assertEquals(0, graph.getEdges(1).get(0).vVertexIndex);
 
         assertEquals(2, graph.getEdges(2).size());
-        int[] verticies = {graph.getEdges(2).get(0).vertexIndex, graph.getEdges(2).get(1).vertexIndex};
+        int[] verticies = {graph.getEdges(2).get(0).vVertexIndex, graph.getEdges(2).get(1).vVertexIndex};
         Arrays.sort(verticies);
         assertArrayEquals(new int[]{0, 1}, verticies);
 
@@ -96,8 +96,8 @@ public class GraphTest {
             graph.addVertex(new Vertex());
         }
         
-        graph.addEdges(1, new Edge(0), new Edge(2), new Edge(3));
-        graph.addEdges(3, new Edge(1));
+        graph.addEdges(new Edge(1, 0), new Edge(1, 2), new Edge(1, 3));
+        graph.addEdges(new Edge(3, 1));
         
         Graph<Vertex, Edge> clone = graph.clone();
         
@@ -105,7 +105,7 @@ public class GraphTest {
         assertEquals(graph.getVertexQuantity(), clone.getVertexQuantity());
         assertEquals(graph.getEdges(1).size(), clone.getEdges(1).size());
         assertEquals(graph.getEdges(3).size(), clone.getEdges(3).size());
-        assertEquals(graph.getEdges(3).get(0).vertexIndex, clone.getEdges(3).get(0).vertexIndex);
+        assertEquals(graph.getEdges(3).get(0).vVertexIndex, clone.getEdges(3).get(0).vVertexIndex);
 
     }
 }

@@ -16,15 +16,28 @@
 package pl.softech.graph;
 
 /**
+ * 
+ * 
+ * Directed edge from vertex u to vertex v (u -> v)
  *
  * @author Sławomir Śledź <slawomir.sledz@sof-tech.pl>
  */
 public class Edge implements Cloneable {
 
-    protected int vertexIndex;
+    /**
+     * Left side of the edge
+     */
+    protected int uVertexIndex;
+    
+    /**
+     * Right side of the edge
+     */
+    protected int vVertexIndex;
+    
 
-    public Edge(int vertexIndex) {
-        this.vertexIndex = vertexIndex;
+    public Edge(int uVertexIndex, int vVertexIndex) {
+        this.uVertexIndex = uVertexIndex;
+        this.vVertexIndex = vVertexIndex;
     }
 
     @Override

@@ -17,6 +17,7 @@ package pl.softech.graph;
 
 import java.util.Comparator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 import pl.softech.collection.Heap;
 
@@ -48,7 +49,7 @@ public class Graphs {
             Vertex u = q.remove();
             for (Edge e : grapf.getEdges(u.index)) {
 
-                Vertex v = grapf.vertices[e.vertexIndex];
+                Vertex v = grapf.vertices[e.vVertexIndex];
                 if (v.colour == Vertex.COLOUR_WHITE) {
                     v.paintGrey();
                     v.distance = u.distance + 1;
@@ -68,7 +69,7 @@ public class Graphs {
 
         for (Edge e : graph.getEdges(vertex.index)) {
 
-            Vertex v = graph.vertices[e.vertexIndex];
+            Vertex v = graph.vertices[e.vVertexIndex];
             if (v.colour == Vertex.COLOUR_WHITE) {
                 v.parent = vertex;
                 dfs(v, graph);
@@ -184,5 +185,73 @@ public class Graphs {
         }
 
         return vertices;
+    }
+    
+    /**
+     * Returns a representant of the set to which vertex belongs
+     */
+    private static Vertex findSet(Vertex vertex) {
+        Vertex it;
+        
+        for(it = vertex; it.parent != null; it = it.parent) {
+        }
+        
+        return it;
+    }
+    
+    /**
+     * Joins two sets of vertices
+     */
+    private static void union(Vertex u, Vertex v) {
+        
+        Vertex setU = findSet(u);
+        setU.parent = v;
+        
+    }
+    
+    /**
+     * Minimum Spanning tree by Kruskal
+     * 
+     */
+    public static<E extends Edge> List<E> mstKruskal(Graph<Vertex, E> graph, final Comparator<E> edgeComparator) {
+        
+        List<E> minimumSpanningTree = new LinkedList<E>();
+        
+        E[] edges = (E[]) new Edge[graph.getEdgesQuantity()];
+        
+        Heap<E> heap = new Heap<E>(edges, new Comparator<E>() {
+
+            @Override
+            public int compare(E o1, E o2) {
+                //for minimal heap
+                return -edgeComparator.compare(o1, o2);
+            }
+        });
+        
+        for(Vertex v : graph) {
+            v.parent = null;
+            
+            for(E e : graph.getEdges(v.index)) {
+                heap.addElement(e);
+            }
+            
+        }
+        
+        while(heap.hasMore()) {
+            
+            E edge = heap.extractTop();
+            Vertex u = graph.vertices[edge.uVertexIndex];
+            Vertex v = graph.vertices[edge.vVertexIndex];
+            
+            if(findSet(u) != findSet(v)) {
+                
+                minimumSpanningTree.add(edge);
+                union(u, v);
+                
+            }
+        }
+        
+        return minimumSpanningTree;
+        
     }
 }

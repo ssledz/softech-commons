@@ -94,4 +94,33 @@ public class HeapTest {
         assertArrayEquals(new int[]{9, 8, 6, 6, 5, 4, 3, 1}, arr);
         
     }
+    
+    @Test
+    public void testChangeKeyAt() {
+        
+        Integer[] arr = new Integer[]{5, 6, 1, 4, 9, 8, 3, 6};
+        Heap<Integer> heap = new Heap<Integer>(arr, intComparator);
+        heap.buildHeap();
+        
+        assertArrayEquals(new Integer[]{9, 6, 8, 6, 5, 1, 3, 4}, arr);
+        
+        arr[1] = 0;
+        heap.changeKeyAt(1);
+        assertArrayEquals(new Integer[]{9, 6, 8, 4, 5, 1, 3, 0}, arr);
+        
+        arr[0] = 7;
+        heap.changeKeyAt(0);
+        assertArrayEquals(new Integer[]{8, 6, 7, 4, 5, 1, 3, 0}, arr);
+        
+        arr[5] = 11;
+        heap.changeKeyAt(5);
+        assertArrayEquals(new Integer[]{11, 6, 8, 4, 5, 7, 3, 0}, arr);
+        
+        while (heap.hasMore()) {
+            heap.extractTop();
+        }
+        
+        assertArrayEquals(new Integer[]{0, 3, 4, 5, 6, 7, 8, 11}, arr);
+        
+    }
 }

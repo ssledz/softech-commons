@@ -79,15 +79,29 @@ public class Heap<T> {
         return elements[heapSize];
 
     }
+    
+    public void changeKeyAt(int index) {
+       
+       if(index > 0 && comparator.compare(elements[parent(index)], elements[index]) < 0) {
+           shiftUp(index);
+           return;
+       }
+       
+       shiftDown(heapSize, index);
+    }
 
     public void setComparator(Comparator<T> comparator) {
         this.comparator = comparator;
     }
     
-    private void shiftDown(int heapSize) {
+    private void shiftDown(int heapSize) { 
+        shiftDown(heapSize, 0);
+    }
+    
+    private void shiftDown(int heapSize, int index) {
 
         int i;
-        int j = 0;
+        int j = index;
 
         do {
 

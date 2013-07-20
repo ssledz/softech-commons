@@ -28,6 +28,7 @@ public class Graph<V extends Vertex, E extends Edge> implements Iterable<V>, Clo
 
     V[] vertices;
     private int vertexQuantity;
+    private int edgesQuantity;
     private List<E>[] edges;
     int time;
 
@@ -51,17 +52,23 @@ public class Graph<V extends Vertex, E extends Edge> implements Iterable<V>, Clo
         vertexQuantity++;
     }
 
-    public void addEdge(int vertexIndex, E edge) {
-        if (edges[vertexIndex] == null) {
-            edges[vertexIndex] = new LinkedList<E>();
+    public void addEdge(E edge) {
+        if (edges[edge.uVertexIndex] == null) {
+            edges[edge.uVertexIndex] = new LinkedList<E>();
         }
-        edges[vertexIndex].add(edge);
+        edgesQuantity++;
+        edges[edge.uVertexIndex].add(edge);
     }
 
     public int getVertexQuantity() {
         return vertexQuantity;
     }
 
+    public int getEdgesQuantity() {
+        return edgesQuantity;
+    }
+    
+    
     List<E> getEdges(int vertexIndex) {
         if (edges[vertexIndex] == null) {
             return Collections.EMPTY_LIST;
@@ -69,13 +76,9 @@ public class Graph<V extends Vertex, E extends Edge> implements Iterable<V>, Clo
         return edges[vertexIndex];
     }
 
-    public void addEdge(V vertex, E edge) {
-        addEdge(vertex.index, edge);
-    }
-
-    public void addEdges(int vertexIndex, E... edges) {
+    public void addEdges(E... edges) {
         for (E edge : edges) {
-            addEdge(vertexIndex, edge);
+            addEdge(edge);
         }
     }
 
@@ -101,11 +104,11 @@ public class Graph<V extends Vertex, E extends Edge> implements Iterable<V>, Clo
             Iterator<Edge> it = (Iterator<Edge>) edges[v.index].iterator();
             while (it.hasNext()) {
                 Edge e = it.next();
-                if (ledges[e.vertexIndex] == null) {
-                    ledges[e.vertexIndex] = new LinkedList<E>();
+                if (ledges[e.vVertexIndex] == null) {
+                    ledges[e.vVertexIndex] = new LinkedList<E>();
                 }
-                ledges[e.vertexIndex].add((E) e);
-                e.vertexIndex = v.index;
+                ledges[e.vVertexIndex].add((E) e);
+                e.vVertexIndex = v.index;
                 it.remove();
             }
 

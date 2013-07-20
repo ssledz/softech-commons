@@ -78,7 +78,7 @@ public class GraphVisualisator extends JPanel {
             g2.setColor(Color.BLUE);
 
             for (Edge e : graph.getEdges(v.index)) {
-                Point2D p2 = vcs[e.vertexIndex];
+                Point2D p2 = vcs[e.vVertexIndex];
                 Line2D line = new Line2D.Double(p1, p2);
                 g2.draw(line);
             }
