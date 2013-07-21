@@ -25,13 +25,25 @@ public class PriorityQueue<V, K> {
 
     public class Entry<V, K> {
 
-        K key;
-        V value;
-        int index;
+        private K key;
+        private V value;
+        private int index;
 
         private Entry(K key, V value) {
             this.key = key;
             this.value = value;
+        }
+
+        public K getKey() {
+            return key;
+        }
+
+        public V getValue() {
+            return value;
+        }
+
+        public int getIndex() {
+            return index;
         }
         
     }
@@ -161,10 +173,12 @@ public class PriorityQueue<V, K> {
         shiftDown(heapSize, index);
     }
     
-    public void addElement(K key, V value) {
-        elements[heapSize] = new Entry<V, K>(key, value);
-        elements[heapSize].index = heapSize;
+    public Entry<V, K> addElement(K key, V value) {
+        Entry<V, K> e = new Entry<V, K>(key, value);
+        e.index = heapSize;
+        elements[heapSize] = e;
         heapSize++;
         shiftUp(heapSize - 1);
+        return e;
     }
 }
