@@ -19,7 +19,9 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-import pl.softech.collection.Heap;
+import pl.softech.collection.IHeap;
+import pl.softech.collection.MaxHeap;
+import pl.softech.collection.MinHeap;
 
 /**
  *
@@ -112,7 +114,7 @@ public class Graphs {
         //traversing graph O(V+E)
         dfs(graph);
         Vertex[] vertices = new Vertex[graph.getVertexQuantity()];
-        Heap<Vertex> heap = new Heap<Vertex>(vertices, new Comparator<Vertex>() {
+        MaxHeap<Vertex> heap = new MaxHeap<Vertex>(vertices, new Comparator<Vertex>() {
             @Override
             public int compare(Vertex o1, Vertex o2) {
                 return o2.endTime - o1.endTime;
@@ -149,7 +151,7 @@ public class Graphs {
 
         Vertex[] vertices = new Vertex[graph.getVertexQuantity()];
 
-        Heap<Vertex> heap = new Heap<Vertex>(vertices, new Comparator<Vertex>() {
+        MaxHeap<Vertex> heap = new MaxHeap<Vertex>(vertices, new Comparator<Vertex>() {
             @Override
             public int compare(Vertex o1, Vertex o2) {
                 return graph.vertices[o2.index].endTime - graph.vertices[o1.index].endTime;
@@ -219,12 +221,11 @@ public class Graphs {
         
         E[] edges = (E[]) new Edge[graph.getEdgesQuantity()];
         
-        Heap<E> heap = new Heap<E>(edges, new Comparator<E>() {
+        IHeap<E> heap = new MinHeap<E>(edges, new Comparator<E>() {
 
             @Override
             public int compare(E o1, E o2) {
-                //for minimal heap
-                return -edgeComparator.compare(o1, o2);
+                return edgeComparator.compare(o1, o2);
             }
         });
         

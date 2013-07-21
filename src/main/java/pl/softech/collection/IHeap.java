@@ -13,25 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package pl.softech.sort;
-
-import java.util.Comparator;
-import pl.softech.collection.MaxHeap;
+package pl.softech.collection;
 
 /**
- * O(nlog(n))
+ *
  * @author Sławomir Śledź <slawomir.sledz@sof-tech.pl>
  */
-public class HeapSort<T> implements ISort<T> {
-
-    @Override
-    public void sort(T[] arr, Comparator<T> comparator) {
-        MaxHeap<T> heap = new MaxHeap<T>(arr, comparator);
-        
-        heap.buildHeap();
-        
-        while(heap.hasMore()) {
-            heap.extractTop();
-        }
-    }
+public interface IHeap<T> {
+    T extractTop();
+    void addElement(T element);
+    boolean hasMore();
+    void changeKeyAt(int index);
+    void buildHeap();
 }

@@ -21,18 +21,18 @@ import java.util.Comparator;
  *
  * @author Sławomir Śledź <slawomir.sledz@sof-tech.pl>
  */
-public class Heap<T> {
+public class MaxHeap<T> implements IHeap<T> {
 
     private int heapSize;
     private T[] elements;
     private Comparator<T> comparator;
 
-    public Heap(T[] elements, Comparator<T> comparator) {
+    public MaxHeap(T[] elements, Comparator<T> comparator) {
         this.elements = elements;
         this.comparator = comparator;
     }
 
-    public Heap(int initialSize, Comparator<T> comparator) {
+    public MaxHeap(int initialSize, Comparator<T> comparator) {
         this.elements = (T[]) new Object[initialSize];
         this.comparator = comparator;
     }

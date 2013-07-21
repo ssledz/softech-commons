@@ -23,7 +23,7 @@ import static org.junit.Assert.*;
  *
  * @author Sławomir Śledź <slawomir.sledz@sof-tech.pl>
  */
-public class HeapTest {
+public class MaxHeapTest {
 
     private Comparator<Integer> intComparator = new Comparator<Integer>() {
         @Override
@@ -35,7 +35,7 @@ public class HeapTest {
     @Test
     public void testHasMore() {
 
-        Heap<Integer> heap = new Heap<Integer>(10, intComparator);
+        MaxHeap<Integer> heap = new MaxHeap<Integer>(10, intComparator);
 
         assertFalse(heap.hasMore());
         heap.addElement(1);
@@ -46,7 +46,7 @@ public class HeapTest {
     @Test
     public void testAddElement() {
 
-        Heap<Integer> heap = new Heap<Integer>(10, intComparator);
+        MaxHeap<Integer> heap = new MaxHeap<Integer>(10, intComparator);
         heap.addElement(1);
         heap.addElement(4);
         heap.addElement(2);
@@ -67,7 +67,7 @@ public class HeapTest {
     @Test
     public void testExtractTop() {
 
-        Heap<Integer> heap = new Heap<Integer>(10, intComparator);
+        MaxHeap<Integer> heap = new MaxHeap<Integer>(10, intComparator);
         heap.addElement(1);
         heap.addElement(4);
         heap.addElement(2);
@@ -82,7 +82,7 @@ public class HeapTest {
     
     @Test
     public void testBuildHeap() {
-        Heap<Integer> heap = new Heap<Integer>(new Integer[]{5, 6, 1, 4, 9, 8, 3, 6}, intComparator);
+        MaxHeap<Integer> heap = new MaxHeap<Integer>(new Integer[]{5, 6, 1, 4, 9, 8, 3, 6}, intComparator);
         heap.buildHeap();
         
         int[] arr = new int[8];
@@ -99,7 +99,7 @@ public class HeapTest {
     public void testChangeKeyAt() {
         
         Integer[] arr = new Integer[]{5, 6, 1, 4, 9, 8, 3, 6};
-        Heap<Integer> heap = new Heap<Integer>(arr, intComparator);
+        MaxHeap<Integer> heap = new MaxHeap<Integer>(arr, intComparator);
         heap.buildHeap();
         
         assertArrayEquals(new Integer[]{9, 6, 8, 6, 5, 1, 3, 4}, arr);
