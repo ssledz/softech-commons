@@ -191,23 +191,32 @@ public class Graphs {
     
     /**
      * Returns a representant of the set to which vertex belongs
+     * 
+        * disjoint tree sets with path compression
      */
     private static Vertex findSet(Vertex vertex) {
-        Vertex it;
         
-        for(it = vertex; it.parent != null; it = it.parent) {
+        if(vertex.parent == null) {
+            return vertex;
         }
         
-        return it;
+        Vertex root = findSet(vertex.parent);
+        vertex.parent = root;
+        
+        return root;
+        
     }
     
     /**
      * Joins two sets of vertices
+     * 
+     * disjoint tree sets with path compression
      */
     private static void union(Vertex u, Vertex v) {
         
         Vertex setU = findSet(u);
-        setU.parent = v;
+        Vertex setV = findSet(v);
+        setU.parent = setV;
         
     }
     
