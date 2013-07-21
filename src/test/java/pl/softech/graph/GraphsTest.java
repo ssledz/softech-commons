@@ -30,9 +30,21 @@ import pl.softech.util.IFunction;
  */
 public class GraphsTest {
 
+    private class WeightedEdge extends Edge {
+
+        int weight;
+
+        public WeightedEdge(int uVertexIndex, int vVertexIndex, int weight) {
+            super(uVertexIndex, vVertexIndex);
+            this.weight = weight;
+        }
+    }
+    
+    
     private int vertexQuantity = 6;
     private Graph<Vertex, Edge> graph = new Graph<Vertex, Edge>(vertexQuantity);
     private Graph<Vertex, Edge> directedGraph = new Graph<Vertex, Edge>(vertexQuantity);
+    private Graph<Vertex, WeightedEdge> lgraph = new Graph<Vertex, WeightedEdge>(9);
 
     public GraphsTest() {
 
@@ -52,7 +64,19 @@ public class GraphsTest {
         graph.addEdges(new Edge(3, 4), new Edge(3, 2));
         graph.addEdges(new Edge(4, 3));
 
+        for (int i = 0; i < 9; i++) {
+            lgraph.addVertex(new Vertex());
+        }
 
+        lgraph.addEdges(new WeightedEdge(0, 1, 4), new WeightedEdge(0, 7, 8));
+        lgraph.addEdges(new WeightedEdge(1, 0, 4), new WeightedEdge(1, 2, 8), new WeightedEdge(1, 7, 11));
+        lgraph.addEdges(new WeightedEdge(2, 1, 8), new WeightedEdge(2, 3, 7), new WeightedEdge(2, 5, 4), new WeightedEdge(2, 8, 2));
+        lgraph.addEdges(new WeightedEdge(3, 2, 7), new WeightedEdge(3, 4, 9), new WeightedEdge(3, 5, 14));
+        lgraph.addEdges(new WeightedEdge(4, 3, 9), new WeightedEdge(4, 5, 10));
+        lgraph.addEdges(new WeightedEdge(5, 2, 4), new WeightedEdge(5, 3, 14), new WeightedEdge(5, 4, 10), new WeightedEdge(5, 6, 2));
+        lgraph.addEdges(new WeightedEdge(6, 5, 2), new WeightedEdge(6, 7, 1), new WeightedEdge(6, 8, 6));
+        lgraph.addEdges(new WeightedEdge(7, 0, 8), new WeightedEdge(7, 1, 11), new WeightedEdge(7, 6, 1), new WeightedEdge(7, 8, 7));
+        lgraph.addEdges(new WeightedEdge(8, 2, 2), new WeightedEdge(8, 6, 6), new WeightedEdge(8, 7, 7));
 
     }
 
@@ -172,31 +196,6 @@ public class GraphsTest {
     @Test
     public void testMstKruskal() {
 
-        class WeightedEdge extends Edge {
-
-            int weight;
-
-            public WeightedEdge(int uVertexIndex, int vVertexIndex, int weight) {
-                super(uVertexIndex, vVertexIndex);
-                this.weight = weight;
-            }
-        }
-
-        Graph<Vertex, WeightedEdge> lgraph = new Graph<Vertex, WeightedEdge>(9);
-        for (int i = 0; i < 9; i++) {
-            lgraph.addVertex(new Vertex());
-        }
-
-        lgraph.addEdges(new WeightedEdge(0, 1, 4), new WeightedEdge(0, 7, 8));
-        lgraph.addEdges(new WeightedEdge(1, 0, 4), new WeightedEdge(1, 2, 8), new WeightedEdge(1, 7, 11));
-        lgraph.addEdges(new WeightedEdge(2, 1, 8), new WeightedEdge(2, 3, 7), new WeightedEdge(2, 5, 4), new WeightedEdge(2, 8, 2));
-        lgraph.addEdges(new WeightedEdge(3, 2, 7), new WeightedEdge(3, 4, 9), new WeightedEdge(3, 5, 14));
-        lgraph.addEdges(new WeightedEdge(4, 3, 9), new WeightedEdge(4, 5, 10));
-        lgraph.addEdges(new WeightedEdge(5, 2, 4), new WeightedEdge(5, 3, 14), new WeightedEdge(5, 4, 10), new WeightedEdge(5, 6, 2));
-        lgraph.addEdges(new WeightedEdge(6, 5, 2), new WeightedEdge(6, 7, 1), new WeightedEdge(6, 8, 6));
-        lgraph.addEdges(new WeightedEdge(7, 0, 8), new WeightedEdge(7, 1, 11), new WeightedEdge(7, 6, 1), new WeightedEdge(7, 8, 7));
-        lgraph.addEdges(new WeightedEdge(8, 2, 2), new WeightedEdge(8, 6, 6), new WeightedEdge(8, 7, 7));
-
         List<WeightedEdge> edges = Graphs.mstKruskal(lgraph, new Comparator<WeightedEdge>() {
             @Override
             public int compare(WeightedEdge o1, WeightedEdge o2) {
@@ -210,7 +209,7 @@ public class GraphsTest {
             weight += we.weight;
         }
 
-        assertArrayEquals(new Integer[][] {
+        assertArrayEquals(new Integer[][]{
             //{ u, v, weight(u,v) }
             {6, 7, 1},
             {2, 8, 2},
@@ -221,14 +220,58 @@ public class GraphsTest {
             {1, 2, 8},
             {3, 4, 9}
         }, Arrays.transform(edges.toArray(new WeightedEdge[0]), new IFunction<WeightedEdge, Integer[]>() {
-            
             @Override
             public Integer[] apply(WeightedEdge input) {
                 return new Integer[]{input.uVertexIndex, input.vVertexIndex, input.weight};
             }
-            
         }));
-        
+
+        assertEquals(37, weight);
+
+    }
+
+    @Test
+    public void testMstPrim() {
+
+        List<WeightedEdge> edges = Graphs.mstPrim(lgraph, lgraph.vertices[1], new Comparator<WeightedEdge>() {
+            @Override
+            public int compare(WeightedEdge o1, WeightedEdge o2) {
+                return o1.weight - o2.weight;
+            }
+        }, new WeightedEdge(-1, -1, 0), new WeightedEdge(-2, -2, Integer.MAX_VALUE));
+
+        Collections.sort(edges, new Comparator<WeightedEdge>() {
+            @Override
+            public int compare(WeightedEdge o1, WeightedEdge o2) {
+                return o1.weight - o2.weight;
+            }
+        });
+
+        int weight = 0;
+        for (WeightedEdge we : edges) {
+//            System.out.println(String.format("%d -> %d (%d)", we.uVertexIndex, we.vVertexIndex, we.weight));
+            weight += we.weight;
+        }
+
+//        System.out.println("Weight=" + weight);
+
+        assertArrayEquals(new Integer[][]{
+            //{ u, v, weight(u,v) }
+            {6, 7, 1},
+            {5, 6, 2},
+            {2, 8, 2},
+            {1, 0, 4},
+            {2, 5, 4},
+            {2, 3, 7},
+            {1, 2, 8},
+            {3, 4, 9}
+        }, Arrays.transform(edges.toArray(new WeightedEdge[0]), new IFunction<WeightedEdge, Integer[]>() {
+            @Override
+            public Integer[] apply(WeightedEdge input) {
+                return new Integer[]{input.uVertexIndex, input.vVertexIndex, input.weight};
+            }
+        }));
+
         assertEquals(37, weight);
 
     }

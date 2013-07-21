@@ -21,9 +21,9 @@ import java.util.Comparator;
  *
  * @author Sławomir Śledź <slawomir.sledz@sof-tech.pl>
  */
-public class PriorityQueue<V, K> {
+public class PriorityQueue<K, V> {
 
-    public class Entry<V, K> {
+    public static class Entry<K, V> {
 
         private K key;
         private V value;
@@ -48,11 +48,11 @@ public class PriorityQueue<V, K> {
         
     }
     private int heapSize;
-    private Entry<V, K>[] elements;
+    private Entry<K, V>[] elements;
     private Comparator<K> comparator;
 
     public PriorityQueue(int initialSize, Comparator<K> comparator) {
-        this.elements = (Entry<V, K>[]) new Entry[initialSize];
+        this.elements = (Entry<K, V>[]) new Entry[initialSize];
         this.comparator = comparator;
     }
 
@@ -71,7 +71,7 @@ public class PriorityQueue<V, K> {
     }
 
     private void swap(int i, int j) {
-        Entry<V, K> tmp = elements[i];
+        Entry<K, V> tmp = elements[i];
         tmp.index = j;
         elements[i] = elements[j];
         elements[i].index = i;
@@ -82,7 +82,7 @@ public class PriorityQueue<V, K> {
         shiftDown(heapSize, 0);
     }
 
-    public Entry<V, K> peekMin() {
+    public Entry<K, V> peekMin() {
         if(heapSize == 0) {
             return null;
         }
@@ -93,14 +93,14 @@ public class PriorityQueue<V, K> {
         return heapSize > 0;
     }
     
-    public Entry<V, K> extractMin() {
+    public Entry<K, V> extractMin() {
 
         if (heapSize == 0) {
             return null;
         }
 
         heapSize--;
-        Entry<V, K> tmp = elements[0];
+        Entry<K, V> tmp = elements[0];
         elements[0] = elements[heapSize];
         shiftDown(heapSize);
         return tmp;
@@ -173,8 +173,8 @@ public class PriorityQueue<V, K> {
         shiftDown(heapSize, index);
     }
     
-    public Entry<V, K> addElement(K key, V value) {
-        Entry<V, K> e = new Entry<V, K>(key, value);
+    public Entry<K, V> addElement(K key, V value) {
+        Entry<K, V> e = new Entry<K, V>(key, value);
         e.index = heapSize;
         elements[heapSize] = e;
         heapSize++;

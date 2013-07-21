@@ -37,18 +37,17 @@ public class PriorityQueueTest {
      */
     @Test
     public void testExtractMin() {
-        PriorityQueue<String, Integer> pq = new PriorityQueue<String, Integer>(50, intComparator);
+        PriorityQueue<Integer, String> pq = new PriorityQueue<Integer, String>(50, intComparator);
 
         pq.addElement(10, "a");
         pq.addElement(1, "b");
         pq.addElement(11, "c");
         pq.addElement(0, "d");
 
-
-        assertEquals("d", pq.extractMin().value);
-        assertEquals("b", pq.extractMin().value);
-        assertEquals("a", pq.extractMin().value);
-        assertEquals("c", pq.extractMin().value);
+        assertEquals("d", pq.extractMin().getValue());
+        assertEquals("b", pq.extractMin().getValue());
+        assertEquals("a", pq.extractMin().getValue());
+        assertEquals("c", pq.extractMin().getValue());
     }
 
     /**
@@ -56,25 +55,25 @@ public class PriorityQueueTest {
      */
     @Test
     public void testChangeKeyAt() {
-        
-        PriorityQueue<String, Integer> pq = new PriorityQueue<String, Integer>(50, intComparator);
+
+        PriorityQueue<Integer, String> pq = new PriorityQueue<Integer, String>(50, intComparator);
 
         pq.addElement(10, "a");
         pq.addElement(1, "b");
         pq.addElement(11, "c");
         pq.addElement(0, "d");
-        
-        assertEquals("d", pq.peekMin().value);
-        pq.changeKeyAt(pq.peekMin().index, 12);
-        assertEquals("b", pq.peekMin().value);
-        pq.changeKeyAt(pq.peekMin().index, 13);
-        
-        assertEquals("a", pq.extractMin().value);
-        pq.changeKeyAt(pq.peekMin().index, 14);
-        
-        assertEquals("d", pq.extractMin().value);
-        assertEquals("b", pq.extractMin().value);
-        assertEquals("c", pq.extractMin().value);
-        
+
+        assertEquals("d", pq.peekMin().getValue());
+        pq.changeKeyAt(pq.peekMin().getIndex(), 12);
+        assertEquals("b", pq.peekMin().getValue());
+        pq.changeKeyAt(pq.peekMin().getIndex(), 13);
+
+        assertEquals("a", pq.extractMin().getValue());
+        pq.changeKeyAt(pq.peekMin().getIndex(), 14);
+
+        assertEquals("d", pq.extractMin().getValue());
+        assertEquals("b", pq.extractMin().getValue());
+        assertEquals("c", pq.extractMin().getValue());
+
     }
 }
